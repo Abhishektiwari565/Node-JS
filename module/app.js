@@ -12,3 +12,8 @@ const fs=require("fs");
 
 
 fs.writeFileSync("notes.txt","hello world")
+
+const data=fs.readFileSync("notes.txt","utf-8")
+console.log(data);
+
+fs.appendFileSync("notes.txt","/nlearning nodes js ")
