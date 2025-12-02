@@ -8,7 +8,7 @@
 // math.add(10,5)
 // math.sub(20,2)
 
-const fs=require("./fs");
+const fs=require("fs");
 
 
-fs.write
+fs.writeFileSync("notes.txt","hello world")
