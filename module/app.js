@@ -8,12 +8,18 @@
 // math.add(10,5)
 // math.sub(20,2)
 
-const fs=require("fs");
+// const fs=require("fs");
 
 
-fs.writeFileSync("notes.txt","hello world")
+// fs.writeFileSync("notes.txt","hello world")
 
-const data=fs.readFileSync("notes.txt","utf-8")
-console.log(data);
+// const data=fs.readFileSync("notes.txt","utf-8")
+// console.log(data);
 
-fs.appendFileSync("notes.txt","/nlearning nodes js ")
+// fs.appendFileSync("notes.txt","/nlearning nodes js ")
+
+import chalk from "chalk";
+
+console.log(chalk.green("success"))
+console.log(chalk.blue("message"))
+console.log(chalk.red("error"))
