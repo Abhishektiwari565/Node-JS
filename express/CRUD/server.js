@@ -1,0 +1,40 @@
+import express from 'express'
+
+const app=express();
+app.use(express.json())
+
+const users=[
+    {
+    "id": 1,
+    "name": "Leanne Graham",
+    "username": "Bret",
+    "email": "Sincere@april.biz",
+    },
+    {
+     "id": 2,
+    "name": "Ervin Howell",
+    "username": "Antonette",
+    "email": "Shanna@melissa.tv",
+    },
+    {
+    "id": 3,
+    "name": "Clementine Bauch",
+    "username": "Samantha",
+    "email": "Nathan@yesenia.net",
+    }
+]
+
+// Todo get 
+app.get("/api",(req,res)=>{
+    res.json(users);
+})
+
+// Todo post
+app.post("/api",(req,res)=>{
+    users.push(req.body);
+    res.json({msg:"user inserted successfully",users})
+})
+
+app.listen(1818,()=>{
+    console.log("server started on 1818")
+})
