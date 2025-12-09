@@ -45,6 +45,12 @@ app.put("/api",(req,res)=>{
         return user;
     });
     res.json(users);
+});
+
+// Todo delete
+app.delete("/api",(req,res)=>{
+    users=users.filter((user)=>user.id != req.query.id)
+    res.json({message:"user deleted successfully",users})
 })
 
 app.listen(1818,()=>{
