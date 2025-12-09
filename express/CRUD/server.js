@@ -3,7 +3,7 @@ import express from 'express'
 const app=express();
 app.use(express.json())
 
-const users=[
+let users=[
     {
     "id": 1,
     "name": "Leanne Graham",
@@ -33,6 +33,18 @@ app.get("/api",(req,res)=>{
 app.post("/api",(req,res)=>{
     users.push(req.body);
     res.json({msg:"user inserted successfully",users})
+})
+
+// Todo put
+app.put("/api",(req,res)=>{
+    const body=req.body;
+    users=users.map((user)=>{
+        if(user.id==body.id){
+            return body;
+        }
+        return user;
+    });
+    res.json(users);
 })
 
 app.listen(1818,()=>{
