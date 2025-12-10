@@ -23,17 +23,6 @@ const writeUser = (users) => {
     fs.writeFileSync(filepath, JSON.stringify(users, null, 4)); // Pretty file
 };
 
-// GET all users
-app.get("/:id",(req,res)=>{
-     const users = readUser();
-    const id = (req.params.id);
-     if (id) {
-        const data = users.find((user) => user.id == id)
-        res.json([data]);
-    }else{
-        res.json({message:"user not found"})
-    }
-})
 app.get("/", (req, res) => {
     const users = readUser();
     const age=req.query.age;
@@ -46,6 +35,25 @@ app.get("/", (req, res) => {
     }
 
 });
+
+// GET all users
+app.get("/:id",(req,res)=>{
+     const users = readUser();
+    const id = req.params.id;
+    const name=req.params.name;
+     if (id) {
+        const data = users.filter((user) => user.id == id)
+        res.json([data]);
+    }else if(name){
+        const data=users.filter((user)=>user.name=name);
+        res.json([data]);
+    }
+    else{
+        res.json({message:"user not found"})
+    }
+})
+
+
 
 // POST new user
 app.post("/", (req, res) => {

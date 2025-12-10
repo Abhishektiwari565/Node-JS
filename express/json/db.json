@@ -10,5 +10,11 @@
         "name": "Jasprit bumrah",
         "age": "30",
         "phone": "7896541230"
+    },
+    {
+        "id": 4,
+        "name": "hardik pandya",
+        "age": "32",
+        "phone": "8745213625"
     }
 ]
