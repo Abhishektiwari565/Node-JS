@@ -1,1 +1,14 @@
-[{"id":2,"name":"jhonson","age":"30","phone":"8566895244"},{"id":3,"name":"Virat kohli","age":"35","phone":"2566895244"},{"id":4,"name":"rohit sharma","age":"36","phone":"78541236"},{"id":4,"name":"rohit sharma","age":"36","phone":"78541236"}]
+[
+    {
+        "id": 1,
+        "name": "rohit sharma",
+        "age": "36",
+        "phone": "8542136598"
+    },
+    {
+        "id": 3,
+        "name": "Jasprit bumrah",
+        "age": "30",
+        "phone": "7896541230"
+    }
+]
