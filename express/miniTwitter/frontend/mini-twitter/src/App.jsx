@@ -1,35 +1,92 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import axios from "axios"
+import { useState } from "react"
 
 function App() {
-  const [count, setCount] = useState(0)
+
+  const [id, setId] = useState("")
+  const [twit, setTwit] = useState("")
+  const [data, setData] = useState([])
+
+  // GET
+  const handleFetchAPI = async () => {
+    const res = await axios.get("http://localhost:2500/")
+    setData(res.data)
+  }
+
+  // POST
+  const handlePostAPI = async () => {
+    const res = await axios.post("http://localhost:2500/", {
+      id: Number(id),
+      twit: twit
+    })
+    setData([...data, res.data])
+    setId("")
+    setTwit("")
+  }
+
+  // PUT
+ const handlePutAPI = async () => {
+  await axios.put("http://localhost:2500/", {
+    id: Number(id),
+    twit: twit
+  });
+
+  // update UI manually
+  const updatedData = data.map(item =>
+    item.id === Number(id)
+      ? { id: Number(id), twit: twit }
+      : item
+  );
+
+  setData(updatedData);
+  setTwit("");
+};
+
+
+  // DELETE
+ const handleDeleteAPI = async () => {
+  await axios.delete(`http://localhost:2500/${id}`)
+
+  const remainingData = data.filter(
+    item => item.id !== Number(id)
+  )
+
+  setData(remainingData)
+  setId("")
+}
+
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
+      <input
+        type="number"
+        placeholder="Enter ID"
+        value={id}
+        onChange={(e) => setId(e.target.value)}
+      />
+
+      <input
+        type="text"
+        placeholder="Enter twit"
+        value={twit}
+        onChange={(e) => setTwit(e.target.value)}
+      />
+
+      <br /><br />
+
+      <button onClick={handleFetchAPI}>Fetch</button>
+      <button onClick={handlePostAPI}>Post</button>
+      <button onClick={handlePutAPI}>Put</button>
+      <button onClick={handleDeleteAPI}>Delete</button>
+
+      <hr />
+
+      {data.map(item => (
+        <p key={item.id}>
+          {item.id} - {item.twit}
         </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      ))}
     </>
   )
 }
-
-export default App
+export default App;
