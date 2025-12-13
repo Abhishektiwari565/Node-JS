@@ -36,6 +36,7 @@ app.get("/",(req,res)=>{
     res.json(users)
 })
 // for Todo get only single user using ID
+
 app.get("/:id", (req, res) => {
     const users = ReadUser();
     const id=req.params.id;
