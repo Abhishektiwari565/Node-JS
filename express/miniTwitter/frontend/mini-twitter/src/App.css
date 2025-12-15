@@ -1,42 +1,133 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+* {
+  box-sizing: border-box;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+  background: #e6ecf0;
+  display: flex;
+  justify-content: center;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* center the box */
+.page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+/* main card */
+.twitter-card {
+  width: 520px;
+  background: white;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  overflow: hidden;
 }
 
-.card {
-  padding: 2em;
+/* header */
+.header {
+  padding: 16px;
+  font-size: 20px;
+  font-weight: bold;
+  border-bottom: 1px solid #ddd;
 }
 
-.read-the-docs {
-  color: #888;
+/* composer */
+.composer {
+  padding: 15px;
+  border-bottom: 1px solid #ddd;
+}
+
+.composer textarea {
+  width: 100%;
+  min-height: 80px;
+  border: none;
+  resize: none;
+  font-size: 16px;
+  outline: none;
+  margin-top: 10px;
+}
+
+.actions {
+  margin-top: 10px;
+  text-align: right;
+}
+
+.actions button {
+  margin-left: 6px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: none;
+  background: #1d9bf0;
+  color: white;
+  cursor: pointer;
+}
+
+.actions button:hover {
+  background: #1a8cd8;
+}
+
+/* feed */
+.feed {
+  max-height: 350px;
+  overflow-y: auto;
+}
+
+/* tweet */
+.tweet {
+  display: flex;
+  padding: 12px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+  transition: background 0.2s;
+}
+
+.tweet:hover {
+  background: #f5f8fa;
+}
+
+.tweet.active {
+  background: #e8f3ff;
+}
+
+.avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.tweet-body {
+  width: 100%;
+}
+
+.tweet-header {
+  font-size: 14px;
+}
+
+.name {
+  font-weight: bold;
+}
+
+.username,
+.time {
+  color: gray;
+  margin-left: 6px;
+}
+
+.tweet-body p {
+  margin: 6px 0;
+  font-size: 15px;
+}
+
+.icons {
+  color: gray;
+  font-size: 14px;
+}
+h2{
+  background-color:aliceblue;
+  color:blue;
 }

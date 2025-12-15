@@ -1,9 +1,11 @@
+import './App.css'
 import axios from "axios"
 import { useState } from "react"
 
+
 function App() {
 
-  const [id, setId] = useState("")
+  const [selectedId, setSelectedId] = useState(null)
   const [twit, setTwit] = useState("")
   const [data, setData] = useState([])
 
@@ -13,80 +15,115 @@ function App() {
     setData(res.data)
   }
 
-  // POST
+  // POST (AUTO ID)
   const handlePostAPI = async () => {
+    const autoId = Date.now()
+
     const res = await axios.post("http://localhost:2500/", {
-      id: Number(id),
-      twit: twit
+      id: autoId,
+      twit
     })
+
     setData([...data, res.data])
-    setId("")
     setTwit("")
   }
 
-  // PUT
- const handlePutAPI = async () => {
-  await axios.put("http://localhost:2500/", {
-    id: Number(id),
-    twit: twit
-  });
+  // PUT (USE SELECTED ID)
+  const handlePutAPI = async () => {
+    if (!selectedId) return alert("Select a twit first")
 
-  // update UI manually
-  const updatedData = data.map(item =>
-    item.id === Number(id)
-      ? { id: Number(id), twit: twit }
-      : item
-  );
+    await axios.put("http://localhost:2500/", {
+      id: selectedId,
+      twit
+    })
 
-  setData(updatedData);
-  setTwit("");
-};
+    setData(data.map(item =>
+      item.id === selectedId ? { ...item, twit } : item
+    ))
 
+    setTwit("")
+  }
 
-  // DELETE
- const handleDeleteAPI = async () => {
-  await axios.delete(`http://localhost:2500/${id}`)
+  // DELETE (USE SELECTED ID)
+  const handleDeleteAPI = async () => {
+    if (!selectedId) return alert("Select a twit first")
 
-  const remainingData = data.filter(
-    item => item.id !== Number(id)
-  )
+    await axios.delete(`http://localhost:2500/${selectedId}`)
 
-  setData(remainingData)
-  setId("")
+    setData(data.filter(item => item.id !== selectedId))
+    setSelectedId(null)
+    setTwit("")
+  }
+
+ return (
+  <div className="page">
+    <div className="twitter-card">
+
+      {/* Header */}
+      <div className="header">
+        <h2>Mini-Twitter-App</h2>
+      </div>
+
+      {/* Tweet Composer */}
+      <div className="composer">
+        <img
+          className="avatar"
+          src="https://i.pravatar.cc/50"
+          alt="user"
+        />
+
+        <textarea
+          placeholder="Drop your thoughts here…"
+          value={twit}
+          onChange={(e) => setTwit(e.target.value)}
+        />
+
+        <div className="actions">
+          <button onClick={handlePostAPI}>Post</button>
+          <button onClick={handleFetchAPI}>Get</button>
+          <button onClick={handlePutAPI}>Update</button>
+          <button onClick={handleDeleteAPI}>Delete</button>
+        </div>
+      </div>
+
+      {/* Tweets */}
+      <div className="feed">
+        {data.map(item => (
+          <div
+            key={item.id}
+            className={`tweet ${selectedId === item.id ? "active" : ""}`}
+            onClick={() => {
+              setSelectedId(item.id)
+              setTwit(item.twit)
+            }}
+          >
+            <img
+              className="avatar"
+              src="https://i.pravatar.cc/50"
+              alt="user"
+            />
+
+            <div className="tweet-body">
+              <div className="tweet-header">
+                <span className="name">Krishna</span>
+                <span className="username">@Krishna</span>
+                <span className="time">· 1m</span>
+              </div>
+
+              <p>{item.twit}</p>
+
+              <div className="icons">
+                ❤️ 12 💬 4 🔁 2
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+    </div>
+  </div>
+)
+
 }
 
-
-  return (
-    <>
-      <input
-        type="number"
-        placeholder="Enter ID"
-        value={id}
-        onChange={(e) => setId(e.target.value)}
-      />
-
-      <input
-        type="text"
-        placeholder="Enter twit"
-        value={twit}
-        onChange={(e) => setTwit(e.target.value)}
-      />
-
-      <br /><br />
-
-      <button onClick={handleFetchAPI}>Fetch</button>
-      <button onClick={handlePostAPI}>Post</button>
-      <button onClick={handlePutAPI}>Put</button>
-      <button onClick={handleDeleteAPI}>Delete</button>
-
-      <hr />
-
-      {data.map(item => (
-        <p key={item.id}>
-          {item.id} - {item.twit}
-        </p>
-      ))}
-    </>
-  )
-}
-export default App;
+export default App
