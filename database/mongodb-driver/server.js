@@ -43,7 +43,7 @@ app.get('/api',async(req,res)=>{
 });
 
 app.update("/api",async (req,res)=>{
-    
+    const data=await updateStudent()
 })
 
 app.listen(4000,()=>{
