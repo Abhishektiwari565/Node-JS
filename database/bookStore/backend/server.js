@@ -1,11 +1,12 @@
 import express from 'express'
 import bookRoutes from './routes/bookRoutes.js'
 import {connectDB} from './config/db.js'
-import logger from './middleware/logger.js'
+import {logger} from './middleware/logger.js'
 
 
 
 const app= express();
+app.use(express.json())
 app.use(logger);
 
 connectDB();
