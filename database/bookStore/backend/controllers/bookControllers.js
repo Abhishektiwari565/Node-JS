@@ -3,7 +3,7 @@ import {BookModel} from '../models/bookModels.js'
 export const addBook=async(req,res)=>{
 try{
     const result=await BookModel.create(req.body)
-    res.status(201).json({message:"booke added ",result:result})
+    res.status(201).json({message:"book added ",result:result})
 }catch(err){
     res.status(400).json({message:"book no added",error:err.message})
 }
@@ -18,10 +18,20 @@ export const readBook=async(req,res)=>{
     }
 }
 
-// export const updateBook=async(req,res)=>{
-//     try{
+export const updateBook=async(req,res)=>{
+    try{
+        const result=await BookModel.updateOne({_id:req.params.id},{$set:req.body})
+        res.json({message:"book updated",result:result})
+    }catch(err){
+        res.json({message:"book not updated",error:err.message})
+    }
+}
 
-//     }catch(err){
-
-//     }
-// }
+export const deleteBook=async(req,res)=>{
+   try{
+     const result=await BookModel.deleteOne({_id:req.params.id});
+    res.json({message:"book deleted",result:result})
+   }catch(err){
+    res.json({message:"book not deleted",error:err.message})
+   }
+}
