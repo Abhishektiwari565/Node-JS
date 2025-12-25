@@ -10,6 +10,7 @@ const uploadPath=path.join(__dirname,"uploads")
 
 const app=express();
 app.use(express.json());
+app,use("uploads",express.static(uploadPath))
 
 mongoose.connect('mongodb://localhost:27017/school')
 .then(()=>{
@@ -50,6 +51,15 @@ app.post("/",upload.single("image"),async(req,res)=>{
       res.json({message:"student added",data:result})
     }catch(err){
         res.json({message:"error",error:err})
+    }
+});
+
+app.get("/",async(req,res)=>{
+    try{
+        const result=await Student.find()
+        res.json(result)
+    }catch(err){
+        res.json({message:"student not fetched !!",error:err})
     }
 })
 
