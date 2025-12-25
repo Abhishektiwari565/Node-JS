@@ -2,6 +2,7 @@ import express from 'express'
 import mongoose from 'mongoose'
 import multer from 'multer'
 import path from 'path'
+import fs from 'fs'
 import {fileURLToPath} from 'url'
 
 const __filename=fileURLToPath(import.meta.url);
@@ -10,7 +11,7 @@ const uploadPath=path.join(__dirname,"uploads")
 
 const app=express();
 app.use(express.json());
-app,use("uploads",express.static(uploadPath))
+app.use("/uploads",express.static(uploadPath))
 
 mongoose.connect('mongodb://localhost:27017/school')
 .then(()=>{
@@ -33,7 +34,7 @@ const storage=multer.diskStorage({
         cb(null,uploadPath)
     },
     filename:(req,file,cb)=>{
-        cb(null, Date.now()+path.extname(file.originalname));
+        cb(null,Date.now()+path.extname(file.originalname));
     }
 })
 
@@ -60,6 +61,22 @@ app.get("/",async(req,res)=>{
         res.json(result)
     }catch(err){
         res.json({message:"student not fetched !!",error:err})
+    }
+})
+
+app.delete("/:id",async(req,res)=>{
+    try{
+       const student=await Student.findById(req.params.id);
+    //    to delete image from folder
+    const deleteImg=path.join(__dirname,student.img_path)
+    if(fs.existsSync(deleteImg)){
+        fs.unlinkSync(deleteImg);
+    }
+    // to delete image from database
+    await Student.findByIdAndDelete(req.params.id)
+    res.json({message:"student deleted"})
+    }catch(err){
+        res.json({message:"student not deleted",error:err})
     }
 })
 
