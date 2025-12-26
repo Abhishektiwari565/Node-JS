@@ -2,7 +2,7 @@
 import Movie from '../models/movieModels.js';
 import fs from 'fs'
 import path from 'path'
-import {__dirname} from '../routes/movieRoutes.js'
+import {__dirname} from '../server.js'
 
 export const addMovie = async (req, res) => {
     try {
@@ -32,10 +32,13 @@ export const getMovies = async (req, res) => {
 export const deleteMovies=async(req,res)=>{
     try{
         const movie=await Movie.findById(req.params.id)
-    const deleteimg=path.join(__dirname,movie.moviePoster)
+    const imgPath = path.join(__dirname, "uploads", movie.moviePoster)
+
+    console.log("Deleting image at:", imgPath);
     // delete image from folder
-    if(fs.existsSync(deleteimg)){
-        fs.unlinkSync(deleteimg)
+    if(fs.existsSync(imgPath)){
+        console.log("File exists:", fs.existsSync(imgPath));
+        fs.unlinkSync(imgPath)
     }
     // to delete image from database
     await Movie.findByIdAndDelete(req.params.id);
@@ -45,10 +48,26 @@ export const deleteMovies=async(req,res)=>{
     }
 }
 
-// export const updateMovies=()=>{
-//     try{
+export const updateMovies=async(req,res)=>{
+    try{
+        const movie=await Movie.findById(req.params.id);
+        if(req.file && movie.moviePoster){
+            const oldImgPath=path.join(__dirname,"uploads",movie.moviePoster) ;
 
-//     }catch(err){
+            // dlt old image
+            if(fs.existsSync(oldImgPath)){
+                fs.unlinkSync(oldImgPath);
+            }
+            movie.moviePoster=req.file.filename
+        }
 
-//     }
-// }
+        movie.title=req.body.title;
+        movie.description=req.body.description;
+        movie.genre=req.body.genre;
+        movie.releaseYear=req.body.releaseYear;
+        await movie.save();
+        res.json({message:"movie updated",data:movie})
+    }catch(err){
+        res.json({message:"movie not updated",error:err})
+    }
+}

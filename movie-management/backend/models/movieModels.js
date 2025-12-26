@@ -1,23 +1,13 @@
-// import mongoose from 'mongoose'
 
-// const movieSchema=new mongoose.Schema({
-//     title:{type:String,required:true},
-//     description:{type:String,required:true},
-//     genre:{type:String,required:true},
-//     releaseYear:{type:Number,required:true},
-//     moviePoster:{type:String,required:true}
-// });
+    import mongoose from 'mongoose'
 
-// export const Movie=mongoose.model("Movie",movieSchema)
-import mongoose from 'mongoose'
+    const movieSchema = new mongoose.Schema({
+        title: { type: String, required: true },
+        description: { type: String, required: true },
+        genre: { type: String, required: true },
+        releaseYear: { type: Number, required: true },
+        moviePoster: { type: String, required: true }
+    },{timestamps:true});
 
-const movieSchema = new mongoose.Schema({
-    title: { type: String, required: true },
-    description: { type: String, required: true },
-    genre: { type: String, required: true },
-    releaseYear: { type: Number, required: true },
-    moviePoster: { type: String, required: true }
-});
-
-const Movie = mongoose.model("Movie", movieSchema);
-export default Movie;
+    const Movie = mongoose.model("Movie", movieSchema);
+    export default Movie;
