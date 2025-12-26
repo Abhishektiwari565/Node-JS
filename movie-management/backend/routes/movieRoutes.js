@@ -30,16 +30,16 @@
 
 import express from 'express'
 import multer from 'multer'
-import { addMovie, getMovies } from '../controllers/movieControllers.js'
+import { addMovie, getMovies,deleteMovies } from '../controllers/movieControllers.js'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
 const router = express.Router();
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+export const __dirname = path.dirname(__filename);
 
-const uploadPath = path.join(__dirname, "../uploads")
+export const uploadPath = path.join(__dirname, "../uploads")
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -54,5 +54,6 @@ const upload = multer({ storage });
 
 router.post("/", upload.single("moviePoster"), addMovie);
 router.get("/", getMovies);
+router.delete("/:id",deleteMovies)
 
 export default router;
