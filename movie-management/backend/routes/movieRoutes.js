@@ -1,28 +1,58 @@
+// import express from 'express'
+// import multer from 'multer'
+// import {addMovie,getMovies} from '../controllers/movieControllers'
+// import path from 'path'
+// import {fileURLToPath} from 'url'
+
+// const router=express.Router();
+
+// const __filename=fileURLToPath(import.meta.url);
+// const __dirname=path.dirname(__filename);
+// const uploadPath=path.join(__dirname,"uploads")
+
+// const storage=multer.diskStorage({
+//     destination:(req,file,cb)=>{
+//         cb(null,uploadPath)
+//     },
+//     filename:(req,file,cb)=>{
+//         cb(null,Date.now()+path.extname(file.originalname))
+//     }
+    
+// })
+
+// const upload=multer({storage:storage});
+
+// router.post("/",upload.single("image"),addMovie);
+// router.get("/",getMovies);
+
+// export default router;
+
+
 import express from 'express'
 import multer from 'multer'
-import {addMovie,getMovies} from '../controllers/movieControllers'
+import { addMovie, getMovies } from '../controllers/movieControllers.js'
 import path from 'path'
-import {fileURLToPath} from 'url'
+import { fileURLToPath } from 'url'
 
-const router=express.Router();
+const router = express.Router();
 
-const __filename=fileURLToPath(import.meta.url);
-const __dirname=path.dirname(__filename);
-const uploadPath=path.join(__dirname,"uploads")
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-const storage=multer.diskStorage({
-    destination:(req,file,cb)=>{
-        cb(null,uploadPath)
+const uploadPath = path.join(__dirname, "../uploads")
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, uploadPath)
     },
-    filename:(req,file,cb)=>{
-        cb(null,Date.now()+path.extname(file.originalname))
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + path.extname(file.originalname))
     }
-    
 })
 
-const upload=multer({storage:storage});
+const upload = multer({ storage });
 
-router.post("/",upload.single("image"),addMovie);
-router.get("/",getMovies);
+router.post("/", upload.single("moviePoster"), addMovie);
+router.get("/", getMovies);
 
 export default router;
