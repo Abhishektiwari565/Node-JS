@@ -1,42 +1,147 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+body {
+  background: #0f172a;
+  color: #fff;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* MAIN LAYOUT */
+.layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  height: 100vh;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+/* LEFT PANEL */
+.sidebar {
+  background: #020617;
+  padding: 25px;
+  border-right: 1px solid #1e293b;
 }
 
-.card {
-  padding: 2em;
+.sidebar h2 {
+  margin-bottom: 20px;
+  font-size: 22px;
 }
 
-.read-the-docs {
-  color: #888;
+/* INPUTS */
+.field {
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 11px;
+  background: #020617;
+  border: 1px solid #334155;
+  color: #fff;
+  border-radius: 6px;
+}
+
+.field:focus {
+  outline: none;
+  border-color: #38bdf8;
+}
+
+/* BUTTONS */
+.btn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.add {
+  background: #38bdf8;
+  color: #020617;
+}
+
+.update {
+  background: #22c55e;
+  color: #020617;
+}
+
+/* RIGHT PANEL */
+.gallery {
+  padding: 25px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+  overflow-y: auto;
+}
+
+/* MOVIE TILE */
+.movie-tile {
+  position: relative;
+  height: 320px;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.movie-tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.movie-tile:hover img {
+  transform: scale(1.1);
+}
+
+/* OVERLAY */
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 14px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.movie-tile:hover .overlay {
+  opacity: 1;
+}
+
+.overlay h3 {
+  font-size: 18px;
+}
+
+.overlay p {
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+/* ACTIONS */
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.actions button {
+  flex: 1;
+  padding: 6px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.actions button:first-child {
+  background: #facc15;
+}
+
+.actions button:last-child {
+  background: #ef4444;
+  color: white;
 }
