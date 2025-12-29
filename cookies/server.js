@@ -1,28 +1,15 @@
 import express from 'express'
 import cookieParser from 'cookie-parser'
+import {connectDB} from './config/db.js'
+import authRoutes from './routes/authRoutes.js'
+
 
 const app=express();
 app.use(express.json());
 app.use(cookieParser());
+connectDB();
 
-const user={
-    email:"admin@gmail.com",
-    password:"admin@123"
-}
-
-app.post("/",(req,res)=>{
-    const {email,password}=req.body;
-    if(email==user.email && password==user.password){
-        res.cookie("auth",true,{
-            maxAge:1000*60*60,
-            sameSite:"strict",
-            httpOnly:true
-        }) 
-         res.json({message:"Login successfully !"})
-    }else{
-      res.json({message:"enter valid credentials"}) 
-    }
-})
+app.use("/api/auth",authRoutes)
 
 const isAuthenticated=(req,res,next)=>{
     if(req.cookies.auth){
