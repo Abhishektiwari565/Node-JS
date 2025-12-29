@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useRef } from "react";
 import axios from 'axios';
 import './App.css'
 
@@ -7,11 +8,16 @@ function App() {
   const [description, setDescription] = useState("")
   const [genre, setGenre] = useState("")
   const [releaseYear, setReleaseYear] = useState("")
-  const [moviePoster, setMoviePoster] = useState("")
+  const [moviePoster, setMoviePoster] = useState(null)
   const [img, setImg] = useState("")
   const [fetchMovies, setFetchMovies] = useState([]);
   const [movieId, setMovieId] = useState("")
   const [isEdit, setIsEdit] = useState(false)
+
+  
+
+const fileRef = useRef(null);
+
 
   const handleSubmit = async () => {
     const formdata = new FormData()
@@ -26,11 +32,13 @@ function App() {
       getMovies();
       setMovieId(result.data.data._id);
       setImg("http://localhost:5000/uploads/" + result.data.data.moviePoster);
+      clearInputField();
       
     } catch (err) {
       alert("movie not added");
     }
   }
+
 
   const getMovies = async () => {
     const res = await axios.get("http://localhost:5000/")
@@ -75,10 +83,24 @@ function App() {
       alert("Movie updated");
       setIsEdit(false);
       getMovies();
+      clearInputField();
     } catch (err) {
       alert("Movie not updated");
     }
   };
+
+  const clearInputField=()=>{
+    setTitle("");
+    setDescription("");
+    setGenre("");
+    setReleaseYear("");
+    setMoviePoster(null);
+    setImg("")
+
+     if (fileRef.current) {
+    fileRef.current.value = ""; // ✅ THIS clears "dhurandhar.jpeg"
+  }
+  }
 
   return (
    <div className="layout">
@@ -90,7 +112,7 @@ function App() {
     <input className="field" type="text" placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} />
     <input className="field" type="text" placeholder="Genre" value={genre} onChange={(e) => setGenre(e.target.value)} />
     <input className="field" type="number" placeholder="Release Year" value={releaseYear} onChange={(e) => setReleaseYear(e.target.value)} />
-    <input className="field" type="file" onChange={(e) => setMoviePoster(e.target.files[0])} />
+    <input className="field" type="file" ref={fileRef} onChange={(e) => setMoviePoster(e.target.files[0])} />
 
     {isEdit ? (
       <button className="btn update" onClick={handleUpdate}>Update Movie</button>
