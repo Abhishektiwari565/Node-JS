@@ -11,16 +11,5 @@ connectDB();
 
 app.use("/api/auth",authRoutes)
 
-const isAuthenticated=(req,res,next)=>{
-    if(req.cookies.auth){
-        next();
-    }else{
-        res.json({message:"login first to access home page"})
-    }
-}
-
-app.get("/home",isAuthenticated,(req,res)=>{
-    res.json({message:"Home page"})
-})
 
 app.listen(4000,()=>console.log("server started"));
