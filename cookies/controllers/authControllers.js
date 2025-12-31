@@ -9,7 +9,7 @@ export const signUp=async(req,res)=>{
     if(userExists){
         return res.json({message:"user alreday exists"})
     }
-    const hashepassword=Auth.bcrypt(password,10);
+    const hashepassword=await bcrypt.hash(password,10);
 
     // new user 
    const user=await Auth.create({
@@ -29,7 +29,9 @@ export const signIn=async(req,res)=>{
     const user =await Auth.findOne({email})
     if(!user){
         return res.json({message:"user not found"})
-    }if(user.password !== password){
+    }
+     const isMatch= await bcrypt.compare(password==user.password)
+    if(!isMatch){
         return res.json({message:"Invalid password"})
     }
 
