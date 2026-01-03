@@ -31,5 +31,5 @@ export const signin=async(req,res)=>{
 }
 
 export const home=(req,res)=>{
-    res.json({mess})
+    res.json({message:"home page",token});
 }
