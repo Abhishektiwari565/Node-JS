@@ -9,6 +9,7 @@ export const isAuthenticated=async(req,res,next)=>{
     try{
          const decoded=jwt.verify(token,"!@#$%^&*()");
          req.user=decoded;
+         req.token=token;
          next();
     }catch(err){
         res.json({message:"Invalid token",err});
