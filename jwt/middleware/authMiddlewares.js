@@ -1,5 +1,16 @@
 import jwt from 'jsonwebtoken'
 
-export const isAuthenticated=async(req,res)=>{
+export const isAuthenticated=async(req,res,next)=>{
+    const token=req.headers.authorization.split(" ")[1];
 
+    if(!token){
+        return res.json({message:"token missing"});
+    }
+    try{
+         const decoded=jwt.verify(token,"!@#$%^&*()");
+         req.user=decoded;
+         next();
+    }catch(err){
+        res.json({message:"Invalid token",err});
+    }
 }
