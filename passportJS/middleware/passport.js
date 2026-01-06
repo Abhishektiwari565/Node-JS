@@ -29,7 +29,7 @@ passport.serializeUser((user,done)=>{
 });
 
 //to retrive user data using id
-passport.deserializeUser((id,next)=>{
+passport.deserializeUser(async(id,next)=>{
    const user= await Auth.findById(id);
    done(null,user);
 })
