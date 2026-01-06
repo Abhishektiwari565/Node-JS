@@ -1,7 +1,7 @@
 import {Auth} from '../models/AuthModels.js'
 import bcrypt from 'bcrypt'
 
-export const signup=(req,res)=>{
+export const signup=async(req,res)=>{
     try{
         const {email,password}=req.body;
         const hashedPassword=bcrypt.hash(password,10);
@@ -12,6 +12,11 @@ export const signup=(req,res)=>{
         res.json({message:"user not registered",err});
     }
 }
-export const signin=(){}
-export const signout=(){}
-export const home=(){}
+export const signin=(req,res)=>{
+    res.json({message:"signin successfull",user:req.user});
+}
+export const signout=(req,res)=>{
+}
+export const home=(req,res)=>{
+    res.json({message:"home page accessed"});
+}
