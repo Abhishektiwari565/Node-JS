@@ -23,9 +23,13 @@ export const sendOtp=async(req,res)=>{
 export const verifyOtp=async(req,res)=>{
     const {email,otp}=req.body;
     const data=await otpModel.findOne({email,otp});
-    if(data){
-        res.json({message:"otp verified"});
-    }else{
+    if(!data){
         res.json({message:"otp mismatched"});
     }
+    if(data.expiry<new Date(Date.now())){
+        return res.json({message:"otp expired"});
+    }
+    res.json({message:"otp verified"});
+    await otpModel.deleteMany({email});
+    
 }

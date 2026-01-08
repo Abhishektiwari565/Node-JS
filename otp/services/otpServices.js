@@ -14,10 +14,10 @@ const transport=nodemailer.createTransport({
 export const sendOtpMail=async(email,otp)=>{
    try{
      await transport.sendMail({
-        from:`OTP services ${process.env.EMAIL}`,
+        from:`OTP services <${process.env.EMAIL}>`,
         to:email,
         subject:"OTP verification",
-        text:`your otp is ${otp} expire within 2 minutes`
+        text:`your otp is ${otp} ,expire within 2 minutes`
     })
     return true;
    }catch(err){
