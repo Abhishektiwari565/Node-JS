@@ -8,7 +8,7 @@ export const sendOtp=async(req,res)=>{
    const expiry=new Date(Date.now()+2*60*1000);
    try{
     await otpModel.create({email,otp,expiry});
-    const status= sendOtpMail(email,otp);
+    const status= await sendOtpMail(email,otp);
     
     if(status){
         res.json({message:"otp sent successfully"});
