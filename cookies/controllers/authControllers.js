@@ -52,6 +52,6 @@ export const logOut=(req,res)=>{
 }
 
 export const homePage=async(req,res)=>{
-   const user= await Auth.find();
+   const user= await Auth.findOne();
    res.json({message:"home page",user});
 }

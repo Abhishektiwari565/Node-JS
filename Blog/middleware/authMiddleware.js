@@ -1,4 +1,4 @@
-import {authModel} from '../models/authModels'
+import {authModel} from '../models/authModels.js'
 export const IsUserExists=async(req,res,next)=>{
     const{email}=req.body;
    const user= await authModel.findOne({email});

@@ -7,6 +7,6 @@ const router=express.Router();
 router.post("/signup",IsUserExists,signup);
 router.post("/signin",signin);
 router.get("/signout",signout);
-router.post("/blogPage",isAuthenticated,blogPage);
+router.get("/blog",isAuthenticated,blogPage);
 
 export default router;
