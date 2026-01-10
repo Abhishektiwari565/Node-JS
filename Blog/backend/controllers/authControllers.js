@@ -46,9 +46,3 @@ export const signout = (req, res) => {
 
   res.json({ message: "signout successful" });
 };
-
-
-export const blogPage = async (req, res) => {
-    const user = await authModel.find();
-    res.json({ message: "Blog Page", user });
-}
