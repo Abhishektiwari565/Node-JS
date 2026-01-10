@@ -11,16 +11,19 @@ const transport=nodemailer.createTransport({
         pass:process.env.PASS
     }
 })
-export const sendMail=(req,res)=>{
-    const {email}=req.body;
+export const sendMail=async(email)=>{
     const otp=Math.floor(
        1000000+ Math.random()*900000
     );
+
     const expiry=new Date(Date.now()+2*1000*60);
+   await otpModel.deleteMany({email});
+   otpModel.create({email,otp,expiry})
     transport.sendMail({
         from:`OTP serivces ${process.env.EMAIL}`,
         to:email,
         subject:"OTP verification",
         text:`otp is ${otp} expire within`
     })
+    return true
 }

@@ -6,4 +6,4 @@ const otpSchema=new mongoose.Schema({
     expiry:Date
 },{timestamps:true});
 
-export default otpModel=mongoose.model("otps",otpSchema);
+export const otpModel=mongoose.model("otps",otpSchema);
