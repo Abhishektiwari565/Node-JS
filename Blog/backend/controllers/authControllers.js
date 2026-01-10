@@ -33,7 +33,7 @@ export const signin = async (req, res) => {
         res.json({ message: "otp sent to your email", email });
 
     } catch (err) {
-        res.json({ message: "signin failed !" });
+        res.json({ message: "signin failed !",err });
     }
 }
 

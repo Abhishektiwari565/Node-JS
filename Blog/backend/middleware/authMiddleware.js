@@ -5,7 +5,7 @@ export const IsUserExists=async(req,res,next)=>{
    if(!user){
     next();
    }else{
-    res.json({message:"user alreday exist"});
+    return res.json({message:"user alreday exist"});
    }
 }
 
@@ -13,7 +13,7 @@ export const isAuthenticated=(req,res,next)=>{
     if(req.cookies.auth){
         next();
     }else{
-        res.json({message:"signin first!"});
+       return res.json({message:"signin first!"});
     }
 }
 
