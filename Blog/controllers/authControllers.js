@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt'
 import { sendMail } from '../services/services.js'
 import { verifyOtp } from '../controllers/otpControllers.js'
 
+
 export const signup = async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -36,10 +37,16 @@ export const signin = async (req, res) => {
     }
 }
 
-export const signout = async (req, res) => {
-    res.clearCookie("auth", { httpOnly: true, secure: false, sameSite: "strict" });
-    res.json({ message: "user logout" });
-}
+export const signout = (req, res) => {
+  res.clearCookie("auth", {
+    httpOnly: true,
+    secure: false,
+    sameSite: "strict"
+  });
+
+  res.json({ message: "signout successful" });
+};
+
 
 export const blogPage = async (req, res) => {
     const user = await authModel.find();

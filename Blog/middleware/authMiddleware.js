@@ -16,3 +16,13 @@ export const isAuthenticated=(req,res,next)=>{
         res.json({message:"signin first!"});
     }
 }
+
+export const userNotSignIn = (req, res, next) => {
+  if (req.cookies && req.cookies.auth) {
+    next(); // user is logged in
+  } else {
+    return res.status(401).json({
+      message: "signin first to signout"
+    });
+  }
+};
