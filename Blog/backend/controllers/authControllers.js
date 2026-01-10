@@ -11,6 +11,7 @@ export const signup = async (req, res) => {
         await authModel.create({ email, password: hashedPassword });
         res.json({ message: "user signup successfully !" });
     } catch (err) {
+        console.log("Signup Error:", err);
         res.json({ message: "signup failed !" });
     }
 }

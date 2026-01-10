@@ -8,14 +8,14 @@ export const createBlogs = async (req, res) => {
       return res.json({ message: "image required" });
     }
 
-    await blogModel.create({
+    const blog=await blogModel.create({
       title,
       content,
       image: req.file.filename,
       author: req.cookies.auth ? "logged-user" : "anonymous"
     });
 
-    res.json({ message: "Blog created" });
+    res.json({ message: "Blog created",blog });
 
   } catch (err) {
     console.log("Create Blog Error:", err);
