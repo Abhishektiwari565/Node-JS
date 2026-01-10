@@ -15,6 +15,8 @@ app.use(cors({
 }));
 connectDB();
 app.use("/",router)
+app.use("/uploads", express.static("uploads"));
+
 
 const PORT=process.env.PORT;
 console.log("port is:",PORT);

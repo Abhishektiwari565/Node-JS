@@ -4,7 +4,8 @@ export const createBlogs=async(req,res)=>{
    try{
      const {title,content}=req.body;
 
-    await blogModel.create({title,content,author:req.cookies.auth});
+    await blogModel.create({title,content,image: req.file.filename,
+      author: req.user?.email || "anonymous"});
     res.json({message:"Blog created"});
    }catch(err){
     res.json({message:"Blog not created"});
