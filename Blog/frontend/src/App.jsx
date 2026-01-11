@@ -78,8 +78,13 @@ function App() {
     if (step === "home") getBlogs();
   }, [step]);
 
-  const fileRef=useRef(null);
+  const fileRef = useRef(null);
   const handleSubmitBlog = async () => {
+    if (!image) {
+      alert("Please select an image");
+      return;
+    }
+
     const fd = new FormData();
     fd.append("title", title);
     fd.append("content", content);
@@ -95,6 +100,9 @@ function App() {
     setAuthor("");
     setImage(null);
     getBlogs();
+    if (fileRef.current) {
+      fileRef.current.value = "";
+    }
   };
 
   const handleDeleteBlog = async (id) => {
@@ -184,72 +192,100 @@ function App() {
   return (
     <>
       <div className="navbar">
-        <h2>My Blog App</h2>
-        <button onClick={handleSignOut}>Logout</button>
-      </div>
-
-      <div className="blog-layout">
-        {/* CREATE BLOG */}
-        <div className="create-blog">
-          <h3>Create a New Blog</h3>
-          <p>Share your thoughts, stories, and ideas with the world.</p>
-
-          <input
-            placeholder="Blog title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-
-          <textarea
-            placeholder="Write your blog content here..."
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          />
-
-          <input
-            placeholder="Author name"
-            value={author}
-            onChange={(e) => setAuthor(e.target.value)}
-          />
-
-          <input type="file" ref={fileRef} onChange={(e) => setImage(e.target.files[0])} />
-
-          <button onClick={handleSubmitBlog}>Publish Blog</button>
+        <div className="nav-logo">
+          <span className="logo-icon">✍️</span>
+          <span className="logo-text">Blogify</span>
         </div>
 
-        {/* BLOG LIST */}
-        <div className="blog-list">
-          {blogs.map((blog) => (
-            <div key={blog._id} className="blog-card">
-              <h2>{blog.title}</h2>
-              <p>{blog.content}</p>
-              <small>✍ {blog.author}</small>
-
-              {blog.image && (
-                <img
-                  src={`http://localhost:2005/uploads/${blog.image}`}
-                  alt="blog"
-                />
-              )}
-
-              <div className="blog-actions">
-                <button
-                  className="update"
-                  onClick={() => handleUpdateBlog(blog._id)}
-                >
-                  Update
-                </button>
-                <button
-                  className="delete"
-                  onClick={() => handleDeleteBlog(blog._id)}
-                >
-                  Delete
-                </button>
-              </div>
-            </div>
-          ))}
+        <div className="nav-actions">
+          <button className="logout-btn" onClick={handleSignOut}>
+            Logout
+          </button>
         </div>
       </div>
+
+<div className="page-container">
+
+  {/* CREATE BLOG */}
+  <div className="create-blog">
+    <h3>Create a New Blog</h3>
+    <p>Share your thoughts, stories, and ideas with the world.</p>
+
+    <input
+      placeholder="Blog title"
+      value={title}
+      onChange={(e) => setTitle(e.target.value)}
+    />
+
+    <textarea
+      placeholder="Write your blog content here..."
+      value={content}
+      onChange={(e) => setContent(e.target.value)}
+    />
+
+    <input
+      placeholder="Author name"
+      value={author}
+      onChange={(e) => setAuthor(e.target.value)}
+    />
+
+    <label className="file-upload">
+      Upload Image
+      <input
+        type="file"
+        ref={fileRef}
+        hidden
+        onChange={(e) => setImage(e.target.files[0])}
+      />
+    </label>
+
+    <button className="publish-btn" onClick={handleSubmitBlog}>
+      🚀 Publish Blog
+    </button>
+  </div>
+
+  {/* BLOG LIST */}
+  <div className="blog-list">
+    {blogs.map((blog) => (
+      <div key={blog._id} className="blog-card">
+
+        {blog.image && (
+          <img
+            src={`http://localhost:2005/uploads/${blog.image}`}
+            alt="blog"
+          />
+        )}
+
+        <div className="card-actions">
+          <button
+            className="edit-btn"
+            onClick={() => handleUpdateBlog(blog._id)}
+          >
+            ✏️
+          </button>
+          <button
+            className="delete-btn"
+            onClick={() => handleDeleteBlog(blog._id)}
+          >
+            🗑️
+          </button>
+        </div>
+
+        <div className="blog-content">
+          <h2>{blog.title}</h2>
+          <p>
+            {blog.content.length > 120
+              ? blog.content.slice(0, 120) + "..."
+              : blog.content}
+          </p>
+          <small>✍ {blog.author}</small>
+        </div>
+      </div>
+    ))}
+  </div>
+
+</div>
+
     </>
   );
 }
