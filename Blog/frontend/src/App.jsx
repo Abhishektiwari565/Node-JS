@@ -1,5 +1,6 @@
-import axios from 'axios'
-import { useState } from 'react';
+import axios from "axios";
+import { useState, useEffect, useRef } from "react";
+import "./App.css";
 
 function App() {
   const [email, setEmail] = useState("");
@@ -10,31 +11,35 @@ function App() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [author, setAuthor] = useState("");
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState(null);
+
+  const [blogs, setBlogs] = useState([]);
+
+  /* ================= AUTH ================= */
 
   const handleSignUp = async () => {
     try {
-      const res = await axios.post(
-        "http://localhost:2005/signup",
-        { email, password }
-      );
+      const res = await axios.post("http://localhost:2005/signup", {
+        email,
+        password,
+      });
       alert(res.data.message);
-      setStep("signin"); // go to signin
+      setStep("signin");
     } catch {
-      alert("signup failed");
+      alert("Signup failed");
     }
   };
 
   const handleSignIn = async () => {
     try {
-      const res = await axios.post(
-        "http://localhost:2005/signin",
-        { email, password }
-      );
+      const res = await axios.post("http://localhost:2005/signin", {
+        email,
+        password,
+      });
       alert(res.data.message);
-      setStep("verify"); // go to OTP
+      setStep("verify");
     } catch {
-      alert("signin failed");
+      alert("Signin failed");
     }
   };
 
@@ -46,117 +51,205 @@ function App() {
         { withCredentials: true }
       );
       alert(res.data.message);
-      setStep("home"); // logged in
+      setStep("home");
+      getBlogs();
     } catch {
-      alert("not verified");
+      alert("OTP not verified");
     }
   };
 
   const handleSignOut = async () => {
-    try {
-      const res = await axios.get(
-        "http://localhost:2005/signout",
-        { withCredentials: true }
-      );
-      alert(res.data.message);
-      setStep("signin"); // back to signin
-      setOtp("");
-      setPassword("");
-    } catch {
-      alert("not signout");
-    }
+    await axios.get("http://localhost:2005/signout", {
+      withCredentials: true,
+    });
+    setStep("signin");
   };
 
-  //For post a blog 
+  /* ================= BLOG ================= */
+
+  const getBlogs = async () => {
+    const res = await axios.get("http://localhost:2005/getBlogs", {
+      withCredentials: true,
+    });
+    setBlogs(res.data);
+  };
+
+  useEffect(() => {
+    if (step === "home") getBlogs();
+  }, [step]);
+
+  const fileRef=useRef(null);
   const handleSubmitBlog = async () => {
-    const formdata = new FormData();
-    formdata.append("title", title);
-    formdata.append("content", content);
-    formdata.append("author", author);
-    formdata.append("image", image);
-    try {
-      const result = await axios.post("http://localhost:2005/createBlogs", formdata,{ withCredentials: true });
-      alert(result.data.message);
-    } catch (err) {
-      console.log(err);
-      alert("Blog not added")
-    }
+    const fd = new FormData();
+    fd.append("title", title);
+    fd.append("content", content);
+    fd.append("author", author);
+    fd.append("image", image);
+
+    await axios.post("http://localhost:2005/createBlogs", fd, {
+      withCredentials: true,
+    });
+
+    setTitle("");
+    setContent("");
+    setAuthor("");
+    setImage(null);
+    getBlogs();
+  };
+
+  const handleDeleteBlog = async (id) => {
+    await axios.delete(`http://localhost:2005/deleteBlogs/${id}`, {
+      withCredentials: true,
+    });
+    getBlogs();
+  };
+
+  const handleUpdateBlog = async (id) => {
+    const fd = new FormData();
+    fd.append("title", title);
+    fd.append("content", content);
+    fd.append("author", author);
+    if (image) fd.append("image", image);
+
+    await axios.put(`http://localhost:2005/updateBlogs/${id}`, fd, {
+      withCredentials: true,
+    });
+    getBlogs();
+  };
+
+  /* ================= UI ================= */
+
+  /* ---------- AUTH PAGES ---------- */
+  if (step !== "home") {
+    return (
+      <div className="auth-wrapper">
+        <div className="auth-card">
+          <h1>
+            {step === "signup" && "Create Account"}
+            {step === "signin" && "Welcome Back"}
+            {step === "verify" && "Verify OTP"}
+          </h1>
+
+          <p>
+            {step === "signup" &&
+              "Join our blogging community and start sharing your ideas."}
+            {step === "signin" &&
+              "Sign in to continue writing and reading amazing blogs."}
+            {step === "verify" &&
+              "Enter the OTP sent to your registered email address."}
+          </p>
+
+          {step !== "verify" && (
+            <input
+              placeholder="Email address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              autoComplete="off"
+            />
+          )}
+
+          {(step === "signup" || step === "signin") && (
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              autoComplete="new-password"
+            />
+          )}
+
+          {step === "verify" && (
+            <input
+              placeholder="Enter OTP"
+              value={otp}
+              onChange={(e) => setOtp(e.target.value)}
+            />
+          )}
+
+          {step === "signup" && (
+            <button onClick={handleSignUp}>Create Account</button>
+          )}
+          {step === "signin" && (
+            <button onClick={handleSignIn}>Sign In</button>
+          )}
+          {step === "verify" && (
+            <button onClick={handleVerify}>Verify OTP</button>
+          )}
+        </div>
+      </div>
+    );
   }
 
-  //for getting all the blogs
-  const getBlogs=async()=>{
-    const result=await axios.get("http://localhost:2005/getBlogs");
-  }
-
+  /* ---------- BLOG PAGE ---------- */
   return (
     <>
-      {step !== "home" && (
-        <input
-          type="email"
-          placeholder="Enter email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-      )}
+      <div className="navbar">
+        <h2>My Blog App</h2>
+        <button onClick={handleSignOut}>Logout</button>
+      </div>
 
-      {(step === "signup" || step === "signin") && (
-        <input
-          type="password"
-          placeholder="Enter password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      )}
+      <div className="blog-layout">
+        {/* CREATE BLOG */}
+        <div className="create-blog">
+          <h3>Create a New Blog</h3>
+          <p>Share your thoughts, stories, and ideas with the world.</p>
 
-      {step === "verify" && (
-        <input
-          type="text"
-          placeholder="Enter OTP"
-          value={otp}
-          onChange={(e) => setOtp(e.target.value)}
-        />
-      )}
-
-      {step === "home" && (
-        <>
           <input
-            type="text"
-            placeholder="Enter Title"
+            placeholder="Blog title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
 
-          <input
-            type="text"
-            placeholder="Enter Content"
+          <textarea
+            placeholder="Write your blog content here..."
             value={content}
             onChange={(e) => setContent(e.target.value)}
           />
 
           <input
-            type="text"
-            placeholder="Enter Author"
+            placeholder="Author name"
             value={author}
             onChange={(e) => setAuthor(e.target.value)}
           />
 
-          <input
-            type="file"
-            onChange={(e) => setImage(e.target.files[0])}
-          />
+          <input type="file" ref={fileRef} onChange={(e) => setImage(e.target.files[0])} />
 
-          <button onClick={handleSubmitBlog}>Create Blog</button>
-        </>
-      )}
+          <button onClick={handleSubmitBlog}>Publish Blog</button>
+        </div>
 
+        {/* BLOG LIST */}
+        <div className="blog-list">
+          {blogs.map((blog) => (
+            <div key={blog._id} className="blog-card">
+              <h2>{blog.title}</h2>
+              <p>{blog.content}</p>
+              <small>✍ {blog.author}</small>
 
+              {blog.image && (
+                <img
+                  src={`http://localhost:2005/uploads/${blog.image}`}
+                  alt="blog"
+                />
+              )}
 
-
-      {step === "signup" && <button onClick={handleSignUp}>SignUp</button>}
-      {step === "signin" && <button onClick={handleSignIn}>SignIn</button>}
-      {step === "verify" && <button onClick={handleVerify}>Verify</button>}
-      {step === "home" && <button onClick={handleSignOut}>SignOut</button>}
-
+              <div className="blog-actions">
+                <button
+                  className="update"
+                  onClick={() => handleUpdateBlog(blog._id)}
+                >
+                  Update
+                </button>
+                <button
+                  className="delete"
+                  onClick={() => handleDeleteBlog(blog._id)}
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </>
   );
 }
