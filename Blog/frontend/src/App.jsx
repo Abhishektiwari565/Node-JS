@@ -123,13 +123,19 @@ function App() {
       withCredentials: true,
     });
     getBlogs();
+     setTitle("");
+    setContent("");
+    setAuthor("");
+    setImage(null);
+
   };
 
   /* ================= UI ================= */
 
   /* ---------- AUTH PAGES ---------- */
-  if (step !== "home") {
-    return (
+ if (step !== "home") {
+  return (
+    <div className="auth-page">
       <div className="auth-wrapper">
         <div className="auth-card">
           <h1>
@@ -185,8 +191,10 @@ function App() {
           )}
         </div>
       </div>
-    );
-  }
+    </div>
+  );
+}
+
 
   /* ---------- BLOG PAGE ---------- */
   return (
