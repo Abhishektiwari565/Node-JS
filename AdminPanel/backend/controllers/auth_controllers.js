@@ -1,6 +1,7 @@
 import { status } from 'init';
 import {authCollection} from '../models/auth_models.js'
 import bcrypt from 'bcrypt'
+import { sendOtp } from '../services/auth_services.js';
 
 export const signup=async(req,res)=>{
     const {email,password}=req.body;
@@ -23,6 +24,13 @@ export const signin=async(req,res)=>{
         const isMatch=await bcrypt.compare(password,user.password);
         if(!isMatch){
             return res.json({status:false,message:"password is incorrect!"});
+        }
+
+        const status=await sendOtp(email);
+        if(status){
+            res.json({status:true,message:"otp sent succesfully"});
+        }else{
+            res.json({status:false,message:"otp cant sent"});
         }
     }catch(err){
         res.json({status:false,message:"signin failed,registration first!"});
