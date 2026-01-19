@@ -58,11 +58,11 @@ export const verifyOtp=async(req,res)=>{
         const token=jwt.sign({...user},process.env.SECRET_KEY,{
             expiresIn:"1h"
         });
-        res.cookie(auth_token,token,{maxAge:1000*60*60,httpOnly:true});
+        res.cookie("auth_token",token,{maxAge:1000*60*60,httpOnly:true});
          await otpCollection.deleteMany({email});
         res.json({status:true,message:"OTP verified & signin successfully"});
     }catch(err){
-        res.json({status:false,message:"OTP verification failed"});
+        res.json({status:false,message:"OTP verification failed",err:err.message});
     }
 }
 export const signout=async(req,res)=>{
