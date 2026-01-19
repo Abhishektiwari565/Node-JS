@@ -39,7 +39,7 @@ export const signin=async(req,res)=>{
         res.json({status:false,message:"signin failed,registration first!"});
     }
 }
-export const verify=async(req,res)=>{
+export const verifyOtp=async(req,res)=>{
     const {email,otp}=req.body
 
     //match otp
@@ -51,15 +51,15 @@ export const verify=async(req,res)=>{
     if(record.expiry < new Date(Date.now())){
         return res.json({status:false,message:"otp is expired!!"});
     }
-    await otpCollection.deleteMany({email});
     
     try{
         const user=await authCollection.findOne({email});
         //create a jwt token and store in cookies
-        const token=jwt.sign(user,process.env.SECRET_KEY,{
+        const token=jwt.sign({...user},process.env.SECRET_KEY,{
             expiresIn:"1h"
         });
         res.cookie(auth_token,token,{maxAge:1000*60*60,httpOnly:true});
+         await otpCollection.deleteMany({email});
         res.json({status:true,message:"OTP verified & signin successfully"});
     }catch(err){
         res.json({status:false,message:"OTP verification failed}"})
