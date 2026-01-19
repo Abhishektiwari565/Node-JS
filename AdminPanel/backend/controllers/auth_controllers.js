@@ -20,7 +20,7 @@ export const signup=async(req,res)=>{
 export const signin=async(req,res)=>{
     const {email,password}=req.body;
     try{
-        const user=authCollection.findOne({email});
+        const user=await authCollection.findOne({email});
         if(!user){
             return res.json({status:false,message:"user not found"});
         }
@@ -62,7 +62,7 @@ export const verifyOtp=async(req,res)=>{
          await otpCollection.deleteMany({email});
         res.json({status:true,message:"OTP verified & signin successfully"});
     }catch(err){
-        res.json({status:false,message:"OTP verification failed}"})
+        res.json({status:false,message:"OTP verification failed"});
     }
 }
 export const signout=async(req,res)=>{
