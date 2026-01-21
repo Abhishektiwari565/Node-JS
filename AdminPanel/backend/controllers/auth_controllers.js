@@ -6,6 +6,7 @@ import {otpCollection} from '../models/otp_models.js'
 import jwt from 'jsonwebtoken'
 import { status } from 'init';
 
+//register user usign signup method
 export const signup=async(req,res)=>{
     const {email,password}=req.body;
     try{
@@ -17,6 +18,8 @@ export const signup=async(req,res)=>{
     }
 
 }
+
+//for signin
 export const signin=async(req,res)=>{
     const {email,password}=req.body;
     try{
@@ -39,6 +42,8 @@ export const signin=async(req,res)=>{
         res.json({status:false,message:"signin failed,registration first!"});
     }
 }
+
+//to verify otp
 export const verifyOtp=async(req,res)=>{
     const {email,otp}=req.body
 
@@ -65,11 +70,14 @@ export const verifyOtp=async(req,res)=>{
         res.json({status:false,message:"OTP verification failed",err:err.message});
     }
 }
+
+//for signout user
 export const signout=async(req,res)=>{
     res.clearCookie(auth_token);
     res.json({status:true,message:"signout successfully"});
 }
 
+// check status user authorized or not 
 export const checkLoginStatus=(req,res)=>{
     try{
         const token=req.cookies.auth_token;
@@ -81,4 +89,25 @@ export const checkLoginStatus=(req,res)=>{
     }catch(err){
         res.json({status:false,message:"Logged out ,Login First to access"});
     }
+}
+
+export const changePassword=async(req,res)=>{
+    const {email,oldPassword,newPassword}=req.body;
+
+   try{
+    const user=await authCollection.findOne({email});
+   if(!user){
+    return res.json({status:false,message:"user not found!!"});
+   }
+   const isMatch=await bcrypt.compare(oldPassword,user.password);
+   if(!isMatch){
+    return res.json({status:false,message:"old password is invalid!"});
+   }
+
+   const hashed=await bcrypt.hash(newPassword,12);
+   await authCollection.updateOne({email},{$set:{password:hashed}})
+   res.json({status:true,message:"new password set successfully"});
+   }catch(err){
+    res.json({status:false,message:err.message});
+   }
 }
