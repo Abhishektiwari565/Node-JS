@@ -4,7 +4,6 @@ import bcrypt from 'bcrypt'
 import { sendOtp } from '../services/auth_services.js';
 import {otpCollection} from '../models/otp_models.js'
 import jwt from 'jsonwebtoken'
-import { status } from 'init';
 
 //register user usign signup method
 export const signup=async(req,res)=>{
@@ -110,4 +109,38 @@ export const changePassword=async(req,res)=>{
    }catch(err){
     res.json({status:false,message:err.message});
    }
+}
+
+export const forgotPassword=async(req,res)=>{
+    const{email}=req.body;
+
+  try{  
+const status =await sendOtp(email);
+     if(status){
+         res.json({status:true,message:"OTP Sent successfully!"});
+    }
+   }
+   catch(err){
+    res.json({status:false,message:err.message});
+   }
+} 
+
+export const changeForgotPassword=async(req,res)=>{
+    const{email,otp,newPassword}=req.body;
+    try{
+    const record=await otpCollection.findOne({email,otp});
+    if(!record){
+        return res.json({status:false,message:"Invlaid Otp  "});
+    }
+    if(record.expiry<new Date(Date.now())){
+        return res.json({status:false,message:"otp expired"});
+    }
+
+    const hashed=await bcrypt.hash(newPassword,12);
+    await authCollection.updateOne({email},{$set:{password:hashed}});
+     await otpCollection.deleteMany({ email });
+    res.json({message:"new password set succesfully"});
+    }catch(err){
+        res.json({status:false,err:err.message});
+    }
 }
