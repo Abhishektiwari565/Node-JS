@@ -132,6 +132,7 @@ export const changeForgotPassword=async(req,res)=>{
     if(!record){
         return res.json({status:false,message:"Invlaid Otp  "});
     }
+    
     if(record.expiry<new Date(Date.now())){
         return res.json({status:false,message:"otp expired"});
     }
