@@ -15,7 +15,7 @@ const transport=nodemailer.createTransport({
 
 export const sendOtp=async(email)=>{
     const otp=Math.floor(100000+Math.random()*90000);
-    const expiry=new Date(Date.now()+1000*60*2);
+    const expiry=new Date(Date.now()+1000*60*30);
   try{
       await otpCollection.create({email,otp,expiry});
     await transport.sendMail({

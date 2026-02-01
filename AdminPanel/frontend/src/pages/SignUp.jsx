@@ -7,11 +7,11 @@ export default function SignUp() {
 
     const handleSignUp=async()=>{
         const user= {email,password};
-       const res= await axios.post(`${base_uri}/auth/signup`,JSON.stringify(user));
+       const res= await axios.post(`${base_uri}/auth/signup`,user);
        if(res.status){
-        alert(res.message);
+        alert(res.data.message);
        }else{
-        alert(res.message);
+        alert(res.data.message);
        }
     }
   return (
@@ -20,7 +20,7 @@ export default function SignUp() {
             <input type="email" placeholder='Email' onChange={(e)=>setEmail(e.target.value)} />
         </div>
         <div>
-            <input type="password" placeholder='password' onChange={(e)=>setEmail(e.target.value)} />
+            <input type="password" placeholder='password' onChange={(e)=>setPassword(e.target.value)} />
         </div>
         <div>
             <button onClick={handleSignUp}>Sign Up</button>
