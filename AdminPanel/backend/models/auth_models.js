@@ -7,6 +7,6 @@ const authSchema=new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:"users"
     }
-},{timestamps:true});
+});
 
 export const authCollection=mongoose.model("auth",authSchema);

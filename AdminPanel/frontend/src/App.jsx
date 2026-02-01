@@ -6,6 +6,8 @@ import SignIn from './pages/SignIn'
 import SignUp from './pages/SignUp'
 import VerifyOtp from './pages/VerifyOtp'
 import VerifyForgotPassword from './pages/VerifyForgotPassword'
+import Home from './pages/Home'
+import Profile from './pages/Profile'
 
 import { Routes, Route } from 'react-router'
 
@@ -19,6 +21,8 @@ function App() {
         <Route path='/changeForgotPassword' element={<VerifyForgotPassword />} />
         <Route path='/changePassword' element={<ChangePassword />} />
         <Route path='/forgotPassword' element={<ForgotPassword />} />
+        <Route path='/home' element={<Home />} />
+        <Route path='/profile' element={<Profile />} />
       </Routes>
     </>
   )

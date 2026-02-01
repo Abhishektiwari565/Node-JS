@@ -3,8 +3,10 @@ import OTPInput from 'otp-input-react'
 import { useLocation } from 'react-router'
 import axios from 'axios'
 import {base_uri} from '../utils/global_variables.js'
+import {useNavigate} from 'react-router'
 
 export default function VerifyOtp() {
+  const navigate=useNavigate();
   const [otp, setOtp] = useState("");
   const { state } = useLocation();
 
@@ -24,6 +26,7 @@ export default function VerifyOtp() {
       // Correct condition
       if (res.data.status) {
         alert(res.data.message);
+        navigate("/home")
       } else {
         alert(res.data.message);
       }
