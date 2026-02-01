@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 
 const userSchema=mongoose.Schema({
-    email:{type:String,required:true},
+    email:{type:String,unique:true,required:true},
     name:String,
     phone:String,
     address:String,

@@ -4,13 +4,15 @@ import bcrypt from 'bcrypt'
 import { sendOtp } from '../services/auth_services.js';
 import {otpCollection} from '../models/otp_models.js'
 import jwt from 'jsonwebtoken'
+import { userCollection } from '../models/user_models.js';
 
 //register user usign signup method
 export const signup=async(req,res)=>{
     const {email,password}=req.body;
     try{
     const hashed=await bcrypt.hash(password,12);
-    await authCollection.create({email,password:hashed});
+    const user=await userCollection.create({email});
+    await authCollection.create({email,password:hashed,user:user._id});
     res.json({status:true,message:"user registered successfully !"});
     }catch(err){
         res.json({status:false,message:"user registration failed !"});

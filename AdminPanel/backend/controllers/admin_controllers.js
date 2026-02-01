@@ -1,14 +1,14 @@
 import { status } from 'init'
 import {userCollection} from '../models/user_models.js'
 
-export const addUser=async(req,res)=>{
-    try{
-        await userCollection.create(req.body);
-        return res.json({status:true,message:"user added successfully"});
-    }catch(err){
-        res.json({status:false,message:err.message});
-    }
-}
+// export const addUser=async(req,res)=>{
+//     try{
+//         await userCollection.create(req.body);
+//         return res.json({status:true,message:"user added successfully"});
+//     }catch(err){
+//         res.json({status:false,message:err.message});
+//     }
+// }
 
 export const updateUser=async(req,res)=>{
     try{
