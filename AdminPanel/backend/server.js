@@ -2,7 +2,8 @@ import express from 'express'
 import {connectDB} from './config/db.js'
 import cookieParsar from 'cookie-parser'
 import cors from 'cors'
-import router from './routes/auth_routes.js'
+import auth_routes from './routes/auth_routes.js'
+import admin_routes from './routes/admin_routes.js'
 import dotenv from 'dotenv'
 
 dotenv.config();
@@ -15,6 +16,7 @@ app.use(cors({
 }));
 connectDB();
 
-app.use("/api/auth",router);
+app.use("/api/auth",auth_routes);
+app.use("/api/admin",admin_routes);
 
 app.listen(process.env.PORT,()=>console.log("server started"));

@@ -36,7 +36,7 @@ export default function SignIn() {
                     <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" className="form-control" id="password" placeholder="Password" />
                 </div>
                 <div className='mb-5 text-end'>
-                    <a href="">Forget Password</a>
+                    <a href="/forgotPassword">Forget Password</a>
                 </div>
                 <div className='mb-3'>
                     <button onClick={handleSignIn} className='btn btn-primary w-100'>Sign In</button>
