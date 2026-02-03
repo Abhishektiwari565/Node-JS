@@ -64,7 +64,7 @@ export const verifyOtp=async(req,res)=>{
         const token=jwt.sign({...user},process.env.SECRET_KEY,{
             expiresIn:"1h"
         });
-        res.cookie("auth_token",token,{maxAge:1000*60*60,httpOnly:true});
+        res.cookie("auth_token",token,{maxAge:1000*60*60,httpOnly:true,samesite:"lax",secure:false});
          await otpCollection.deleteMany({email});
         res.json({status:true,message:"OTP verified & signin successfully"});
     }catch(err){

@@ -13,7 +13,7 @@ export default function VerifyOtp() {
   const handleVerifyOtp = async () => {
     try {
       const res = await axios.post(
-        `${base_uri}/auth/verifyOtp`,
+        `${base_uri}/auth/verifyOtp`,{withCredentials:true},
         {
           email: state,
           otp: Number(otp),

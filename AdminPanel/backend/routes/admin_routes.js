@@ -8,4 +8,4 @@ router.post("/update-user",updateUser);
 router.get("/get-user",getAllUser);
 router.get("/get-current-user",getCurrentUser);
 
-export default router;
+export default router;  

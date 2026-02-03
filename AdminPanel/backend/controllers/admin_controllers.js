@@ -1,6 +1,7 @@
 import { status } from 'init'
 import {userCollection} from '../models/user_models.js'
 import dotenv from 'dotenv'
+import jwt from 'jsonwebtoken'
 
 dotenv.config();
 
@@ -14,6 +15,7 @@ dotenv.config();
 // }
 
 export const updateUser=async(req,res)=>{
+    const {email}=req.body;
     try{
         await userCollection.updateOne({email},{$set:req.body});
         return res.json({status:true,message:"user updated successfully"});
@@ -34,7 +36,9 @@ export const getAllUser=async(req,res)=>{
 export const getCurrentUser=async(req,res)=>{
  try{
        const token=req.cookies.auth_token;
-       console.log(token)
+      console.log("Cookies:", req.cookies);
+console.log("Token:", req.cookies.auth_token);
+
     const decoded=jwt.verify(token,process.env.SECRET_KEY).payload;
     return res.json({status:true,message:"user fetched successfully !",user:decoded});
  }catch(err){
