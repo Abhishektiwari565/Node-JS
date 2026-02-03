@@ -1,5 +1,8 @@
 import { status } from 'init'
 import {userCollection} from '../models/user_models.js'
+import dotenv from 'dotenv'
+
+dotenv.config();
 
 // export const addUser=async(req,res)=>{
 //     try{
@@ -26,4 +29,15 @@ export const getAllUser=async(req,res)=>{
     }catch(err){
         return res.json({status:false,message:err.message});
     }
+}
+
+export const getCurrentUser=async(req,res)=>{
+ try{
+       const token=req.cookies.auth_token;
+       console.log(token)
+    const decoded=jwt.verify(token,process.env.SECRET_KEY).payload;
+    return res.json({status:true,message:"user fetched successfully !",user:decoded});
+ }catch(err){
+    return res.json({status:false,message:err.message});
+ }
 }

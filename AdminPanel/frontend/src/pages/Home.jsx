@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export default function FinanceDashboard() {
+export default function Home() {
   return (
     <div className="container-fluid">
       <div className="row min-vh-100">
@@ -11,6 +11,12 @@ export default function FinanceDashboard() {
           <h4 className="fw-bold mb-4">FinTrack</h4>
 
           <ul className="nav flex-column gap-2">
+              <li className="nav-item">
+              <Link to="/profile" className="nav-link text-white">
+                📊 Profile
+              </Link>
+            </li> 
+
             <li className="nav-item">
               <Link to="/dashboard" className="nav-link text-white">
                 📊 Dashboard
