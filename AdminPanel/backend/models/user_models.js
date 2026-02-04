@@ -5,9 +5,9 @@ const userSchema=mongoose.Schema({
     name:String,
     phone:String,
     address:String,
-    education:String,
     age:Number,
-    exp:String,
+    monthlyBudget:Number,
+    saving:Number,
     image:String
 },{timestamps:true});
 

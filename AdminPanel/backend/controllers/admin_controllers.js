@@ -37,8 +37,8 @@ export const getCurrentUser=async(req,res)=>{
  try{
        const token=req.cookies.auth_token;
     const decoded=jwt.verify(token,process.env.SECRET_KEY);
-    console.log(decoded.payload);
-    return res.json({status:true,message:"user fetched successfully !",user:decoded._doc});
+    console.log(decoded._doc);
+    return res.json({status:true,message:"user fetched successfully !",user:decoded});
  }catch(err){
     return res.json({status:false,message:err.message});
  }

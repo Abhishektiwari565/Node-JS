@@ -59,6 +59,8 @@ export default function Profile() {
                     Full Name *
                   </label>
                   <input
+                  value={currentUser.name ?? ""}
+                  onChange={(e)=>{setCurrentUser({...currentUser,name:e.target.value})}}
                     type="text"
                     className="form-control"
                     placeholder="Enter full name"
@@ -84,7 +86,8 @@ export default function Profile() {
                   </label>
                   <input 
                     disabled={true}
-                    value={currentUser.email}
+                    value={currentUser.email ?? ""}
+                    onChange={(e)=>{setCurrentUser({...currentUser,email:e.target.value})}}
                     type="email"
                     className="form-control"
                     placeholder="Enter email"
@@ -98,6 +101,8 @@ export default function Profile() {
                     Monthly Budget Limit (₹) *
                   </label>
                   <input
+                  value={currentUser.monthlyBudget ?? ""}
+                  onChange={(e)=>{setCurrentUser({...currentUser,monthlyBudget:e.target.value})}}
                     type="number"
                     className="form-control"
                     placeholder="Enter budget"
@@ -111,6 +116,8 @@ export default function Profile() {
                     Mobile Number *
                   </label>
                   <input
+                  value={currentUser.phone ?? ""}
+                  onChange={(e)=>{setCurrentUser({...currentUser,phone:e.target.value})}}
                     type="text"
                     className="form-control"
                     placeholder="Enter mobile number"
@@ -124,6 +131,8 @@ export default function Profile() {
                     Savings Goal (₹) *
                   </label>
                   <input
+                  value={currentUser.saving ?? ""}
+                   onChange={(e)=>{setCurrentUser({...currentUser,saving:e.target.value})}}
                     type="number"
                     className="form-control"
                     placeholder="Enter savings goal"

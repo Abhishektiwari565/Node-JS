@@ -59,7 +59,7 @@ export const verifyOtp=async(req,res)=>{
     }
     
     try{
-        const user=await authCollection.findOne({email});
+        const user=await userCollection.findOne({email});
         //create a jwt token and store in cookies
         const token=jwt.sign({...user},process.env.SECRET_KEY,{
             expiresIn:"1h"

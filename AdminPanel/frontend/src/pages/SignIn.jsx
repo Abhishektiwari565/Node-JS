@@ -31,7 +31,7 @@ export default function SignIn() {
                     <label htmlFor="exampleFormControlInput1" className="form-label">Email address</label>
                     <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" className="form-control" id="exampleFormControlInput1" placeholder="name@example.com" />
                 </div>
-                <div class Name="mb-3">
+                <div className="mb-3">
                     <label htmlFor="exampleFormControlInput2" className="form-label">Password</label>
                     <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" className="form-control" id="password" placeholder="Password" />
                 </div>
