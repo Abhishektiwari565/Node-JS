@@ -82,7 +82,9 @@ export default function Profile() {
                   <label className="form-label fw-semibold">
                     Email Address *
                   </label>
-                  <input
+                  <input 
+                    disabled={true}
+                    value={currentUser.email}
                     type="email"
                     className="form-control"
                     placeholder="Enter email"

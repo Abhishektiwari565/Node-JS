@@ -36,11 +36,9 @@ export const getAllUser=async(req,res)=>{
 export const getCurrentUser=async(req,res)=>{
  try{
        const token=req.cookies.auth_token;
-      console.log("Cookies:", req.cookies);
-console.log("Token:", req.cookies.auth_token);
-
-    const decoded=jwt.verify(token,process.env.SECRET_KEY).payload;
-    return res.json({status:true,message:"user fetched successfully !",user:decoded});
+    const decoded=jwt.verify(token,process.env.SECRET_KEY);
+    console.log(decoded.payload);
+    return res.json({status:true,message:"user fetched successfully !",user:decoded._doc});
  }catch(err){
     return res.json({status:false,message:err.message});
  }
