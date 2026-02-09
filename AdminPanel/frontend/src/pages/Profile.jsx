@@ -4,7 +4,7 @@ import {base_uri} from '../utils/global_variables.js'
 import axios from 'axios'
 
 export default function Profile() {
-  const [currentUser, setCurrentUser] = useState("");
+  const [currentUser, setCurrentUser] = useState({});
 
   useEffect(()=>{
     getCurrentUser();
@@ -53,6 +53,22 @@ export default function Profile() {
           <div className="col-md-8 ps-4">
             <form>
               <div className="row g-3">
+                 {/* Email */}
+                <div className="col-md-6">
+                  <label className="form-label fw-semibold">
+                    Email Address *
+                  </label>
+                  <input 
+                    disabled={true}
+                    value={currentUser.email ?? "Not Assign"}
+                    onChange={(e)=>{setCurrentUser({...currentUser,email:e.target.value})}}
+                    type="email"
+                    className="form-control"
+                    placeholder="Enter email"
+                    defaultValue="abhi@gmail.com"
+                  />
+                </div>
+
                 {/* Full Name */}
                 <div className="col-md-6">
                   <label className="form-label fw-semibold">
@@ -77,22 +93,6 @@ export default function Profile() {
                     <option>Admin</option>
                     <option>User</option>
                   </select>
-                </div>
-
-                {/* Email */}
-                <div className="col-md-6">
-                  <label className="form-label fw-semibold">
-                    Email Address *
-                  </label>
-                  <input 
-                    disabled={true}
-                    value={currentUser.email ?? ""}
-                    onChange={(e)=>{setCurrentUser({...currentUser,email:e.target.value})}}
-                    type="email"
-                    className="form-control"
-                    placeholder="Enter email"
-                    defaultValue="abhi@gmail.com"
-                  />
                 </div>
 
                 {/* Monthly Budget */}
