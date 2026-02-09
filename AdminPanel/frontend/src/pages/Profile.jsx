@@ -6,6 +6,15 @@ import axios from 'axios'
 export default function Profile() {
   const [currentUser, setCurrentUser] = useState({});
 
+  const handleUpdateProfile=async()=>{
+    try{
+      const res=await axios.put(`${base_uri}/admin/update-user`,currentUser,{withCredentials:true});
+      alert(res.data.message);
+    }catch(err){
+      alert(err.message);
+    }
+  }
+
   useEffect(()=>{
     getCurrentUser();
   },[])
@@ -13,11 +22,8 @@ export default function Profile() {
     console.log("--------")
     try{
       const res=await axios.get(`${base_uri}/admin/get-current-user`,{withCredentials:true});
-      console.log(res.data);
       if(res.data.status){
-        console.log(res.data.user);
         setCurrentUser(res.data.user);
-        alert(res.data.message);
       }
     }catch(err){
       alert(err.message);
@@ -60,12 +66,11 @@ export default function Profile() {
                   </label>
                   <input 
                     disabled={true}
-                    value={currentUser.email ?? "Not Assign"}
+                    value={currentUser.email ?? ""}
                     onChange={(e)=>{setCurrentUser({...currentUser,email:e.target.value})}}
                     type="email"
                     className="form-control"
                     placeholder="Enter email"
-                    defaultValue="abhi@gmail.com"
                   />
                 </div>
 
@@ -80,7 +85,6 @@ export default function Profile() {
                     type="text"
                     className="form-control"
                     placeholder="Enter full name"
-                    defaultValue="Abhishek Tiwari"
                   />
                 </div>
 
@@ -106,7 +110,6 @@ export default function Profile() {
                     type="number"
                     className="form-control"
                     placeholder="Enter budget"
-                    defaultValue="30000"
                   />
                 </div>
 
@@ -121,7 +124,6 @@ export default function Profile() {
                     type="text"
                     className="form-control"
                     placeholder="Enter mobile number"
-                    defaultValue="+91 98765 43210"
                   />
                 </div>
 
@@ -136,7 +138,6 @@ export default function Profile() {
                     type="number"
                     className="form-control"
                     placeholder="Enter savings goal"
-                    defaultValue="200000"
                   />
                 </div>
 
@@ -148,8 +149,7 @@ export default function Profile() {
                   <input
                     type="password"
                     className="form-control"
-                    value="********"
-                    disabled
+                    placeholder="Enter password"
                   />
                 </div>
 
@@ -168,7 +168,7 @@ export default function Profile() {
 
               {/* ===== Buttons ===== */}
               <div className="mt-4 d-flex justify-content-end gap-3">
-                <button type="submit" className="btn btn-primary px-4">
+                <button type="button" onClick={handleUpdateProfile} className="btn btn-primary px-4">
                   Save Changes
                 </button>
 
