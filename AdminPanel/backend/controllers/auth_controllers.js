@@ -76,7 +76,11 @@ export const verifyOtp=async(req,res)=>{
 
 //for signout user
 export const signout=async(req,res)=>{
-    res.clearCookie("auth_token");
+   res.clearCookie("auth_token", {
+  httpOnly: true,
+  sameSite: "lax",
+  secure: false,
+});
     res.json({status:true,message:"signout successfully"});
 }
 

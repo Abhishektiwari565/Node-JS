@@ -1,7 +1,20 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import axios from "axios";
+import React, { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { base_uri } from "../utils/global_variables.js";
 
 export default function Home() {
+  const navigate=useNavigate();
+  
+  const handleLogOut = async () => {
+    try {
+      const res = await axios.get(`${base_uri}/auth/signout`, { withCredentials: true })
+      alert(res.data.message);
+      navigate("/");
+    } catch (err) {
+      alert(err.message);
+    }
+  }
   return (
     <div className="container-fluid">
       <div className="row min-vh-100">
@@ -11,15 +24,15 @@ export default function Home() {
           <h4 className="fw-bold mb-4">FinTrack</h4>
 
           <ul className="nav flex-column gap-2">
-              <li className="nav-item">
+            <li className="nav-item">
               <Link to="/profile" className="nav-link text-white">
                 📊 Profile
               </Link>
-            </li> 
+            </li>
 
             <li className="nav-item">
-              <Link to="/dashboard" className="nav-link text-white">
-                📊 Dashboard
+              <Link to="/add-emp" className="nav-link text-white">
+                📊 Add Employee
               </Link>
             </li>
 
@@ -42,9 +55,12 @@ export default function Home() {
             </li>
 
             <li className="nav-item mt-3">
-              <Link to="/" className="nav-link text-danger">
+              <button
+                onClick={handleLogOut}
+                className="nav-link text-danger btn btn-link"
+              >
                 🚪 Logout
-              </Link>
+              </button>
             </li>
           </ul>
         </div>

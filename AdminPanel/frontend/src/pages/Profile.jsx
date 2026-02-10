@@ -91,7 +91,7 @@ export default function Profile() {
                 {/* User Role */}
                 <div className="col-md-6">
                   <label className="form-label fw-semibold">
-                    User Role *
+                   Role 
                   </label>
                   <select className="form-select">
                     <option>Admin</option>
