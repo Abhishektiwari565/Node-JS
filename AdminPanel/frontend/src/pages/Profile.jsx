@@ -19,7 +19,6 @@ export default function Profile() {
     getCurrentUser();
   },[])
   const getCurrentUser=async()=>{
-    console.log("--------")
     try{
       const res=await axios.get(`${base_uri}/admin/get-current-user`,{withCredentials:true});
       if(res.data.status){

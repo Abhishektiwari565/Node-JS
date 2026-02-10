@@ -42,8 +42,8 @@ export const getCurrentUser = async (req, res) => {
     try {
         const token = req.cookies.auth_token;
         const decoded = jwt.verify(token, process.env.SECRET_KEY);
-        console.log(decoded._doc);
-        return res.json({ status: true, message: "user fetched successfully !", user: decoded });
+         const user = await userCollection.findById(decoded.id);
+        return res.json({ status: true, message: "user fetched successfully !", user: user });
     } catch (err) {
         return res.json({ status: false, message: err.message });
     }
