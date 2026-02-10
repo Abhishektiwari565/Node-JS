@@ -56,3 +56,13 @@ export const getCurrentUser = async (req, res) => {
         return res.json({ status: false, message: err.message });
     }
 }
+
+export const deleteUser=async(req,res)=>{
+    const id=req.query.id;
+    try{
+        await userCollection.findByIdAndDelete(id);
+        return res.json({status:true,message:"Employee deleted successfully!!"});
+    }catch(err){
+        return res.json({status:false,message:err.message})
+    }
+}

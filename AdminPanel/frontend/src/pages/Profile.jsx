@@ -93,16 +93,17 @@ export default function Profile() {
                   <label className="form-label fw-semibold">
                    Role 
                   </label>
-                  <select className="form-select">
-                    <option>Admin</option>
-                    <option>User</option>
+                  <select value={currentUser.role ?? ""} onChange={(e)=>{setCurrentUser({...currentUser,role:e.target.value})}} className="form-select">
+                    <option value="">role</option>
+                    <option value={"admin"}>Admin</option>
+                    <option value={"user"}>User</option>
                   </select>
                 </div>
 
                 {/* Monthly Budget */}
                 <div className="col-md-6">
                   <label className="form-label fw-semibold">
-                    Monthly Budget Limit (₹) *
+                    Monthly Budget Limit (₹) *  
                   </label>
                   <input
                   value={currentUser.monthlyBudget ?? ""}

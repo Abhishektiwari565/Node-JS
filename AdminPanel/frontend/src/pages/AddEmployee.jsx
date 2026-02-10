@@ -1,6 +1,49 @@
-import React from 'react'
+import axios from 'axios';
+import React, { useEffect, useState } from 'react'
+import { base_uri } from '../utils/global_variables';
 
 export default function AddEmployee() {
+  const [email,setEmail]=useState(" ");
+  const [password,setPassword]=useState(" ");
+  const [users,setUsers]=useState([]);
+
+  useEffect(()=>{
+    getAllUsers();
+  },[])
+  const handleAddEmployee=async()=>{
+    try{
+      const res=await axios.post(`${base_uri}/auth/signup`,{email,password})
+      if(res.data.status){
+        alert("Employee added successfully!");
+        getAllUsers();
+      }
+    }catch(err){
+      alert(err.message);
+    }
+  }
+
+  const getAllUsers=async()=>{
+    try{
+      const res=await axios.get(`${base_uri}/admin/get-user`);
+      if(res.data.status){
+        setUsers(res.data.user)
+      }
+    }catch(err){
+      alert(err.message);
+    }
+  }
+
+  const handleDelete=async(id)=>{
+    try{
+      const res=await axios.delete(`${base_uri}/admin/delete-user?id=${id}`);
+      if(res.data.status){
+        alert(res.data.message);
+      }
+      getAllUsers();
+    }catch(err){
+      alert(err.message);
+    }
+  }
     return (
        <div className='container-fluid'>
          <div className='container shadow mt-4 p-4 rounded'>
@@ -9,14 +52,14 @@ export default function AddEmployee() {
                 <div className='d-flex w-100 justify-content-between'>
                     <div className="mb-3">
                         <label htmlFor="email" className="form-label">Email address</label>
-                        <input type="email" className="form-control" id="email" placeholder="name@example.com" />
+                        <input value={email} onChange={(e)=>setEmail(e.target.value)} type="email" className="form-control" id="email" placeholder="name@example.com" />
                     </div>
                     <div className="mb-3">
                         <label htmlFor="password" className="form-label">Password</label>
-                        <input type="password" className="form-control" id="password" placeholder="*******" />
+                        <input value={password} onChange={(e)=>setPassword(e.target.value)} type="password" className="form-control" id="password" placeholder="*******" />
                     </div>
                     <div className='d-flex justify-content-center align-items-center'>
-                        <button className='btn btn-primary text-white mt-3 '>Add Employee</button>
+                        <button onClick={handleAddEmployee} className='btn btn-primary text-white mt-3 '>Add Employee</button>
                     </div>
                 </div>
             </div>
@@ -34,27 +77,18 @@ export default function AddEmployee() {
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
+    {users.map((user,i)=>
+       <tr key={i}>
+      <th scope="row">{i+1}</th>
+      <td>{user.name}</td>
+      <td>{user.email}</td>
+      <td>{user.role}</td>
       <td>
         <button className='btn btn-warning'>Edit</button>
-        <button className='btn btn-danger ms-2'>Delete</button>
+        <button onClick={()=>handleDelete(user._id)} className='btn btn-danger ms-2'>Delete</button>
         </td>
     </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td>@fat</td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td colspan="2">Larry the Bird</td>
-      <td>@twitter</td>
-    </tr>
+    )}
   </tbody>
 </table>
         </div>

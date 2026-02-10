@@ -8,7 +8,8 @@ const userSchema=mongoose.Schema({
     age:Number,
     monthlyBudget:Number,
     saving:Number,
-    image:String
+    image:String,
+    role:String
 });
 
 export const userCollection=mongoose.model("users",userSchema);
