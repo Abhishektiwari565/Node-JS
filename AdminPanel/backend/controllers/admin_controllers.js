@@ -15,19 +15,27 @@ dotenv.config();
 // }
 
 export const updateUser = async (req, res) => {
-    const { email } = req.body;
     try {
-        const user=await userCollection.updateOne({ email }, { $set: req.body });
-        const token = jwt.sign({ ...user }, process.env.SECRET_KEY, {
-            expiresIn: "1h"
+        const token = req.cookies.auth_token;
+
+        const decoded = jwt.verify(token, process.env.SECRET_KEY);
+
+        const updatedUser = await userCollection.findByIdAndUpdate(
+            decoded.id,
+            { $set: req.body },
+            { new: true }
+        );
+
+        return res.json({
+            status: true,
+            message: "User updated successfully",
+            user: updatedUser
         });
-        res.cookie("auth_token", token, { maxAge: 1000 * 60 * 60, httpOnly: true, sameSite: "lax", secure: false });
-        return res.json({ status: true, message: "user updated successfully" });
-        console.log(req.body);
+
     } catch (err) {
-        res.json({ status: false, message: err.message });
+        return res.json({ status: false, message: err.message });
     }
-}
+};
 
 export const getAllUser = async (req, res) => {
     try {

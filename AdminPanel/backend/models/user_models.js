@@ -9,6 +9,6 @@ const userSchema=mongoose.Schema({
     monthlyBudget:Number,
     saving:Number,
     image:String
-},{timestamps:true});
+});
 
 export const userCollection=mongoose.model("users",userSchema);

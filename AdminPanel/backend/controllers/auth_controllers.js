@@ -61,9 +61,11 @@ export const verifyOtp=async(req,res)=>{
     try{
         const user=await userCollection.findOne({email});
         //create a jwt token and store in cookies
-        const token=jwt.sign({...user},process.env.SECRET_KEY,{
-            expiresIn:"1h"
-        });
+       const token = jwt.sign(
+    { id: user._id },   // ✅ only store ID
+    process.env.SECRET_KEY,
+    { expiresIn: "1h" }
+);
         res.cookie("auth_token",token,{maxAge:1000*60*60,httpOnly:true,sameSite:"lax",secure:false});
          await otpCollection.deleteMany({email});
         res.json({status:true,message:"OTP verified & signin successfully"});
@@ -74,7 +76,7 @@ export const verifyOtp=async(req,res)=>{
 
 //for signout user
 export const signout=async(req,res)=>{
-    res.clearCookie(auth_token);
+    res.clearCookie("auth_token");
     res.json({status:true,message:"signout successfully"});
 }
 
@@ -85,8 +87,8 @@ export const checkLoginStatus=(req,res)=>{
         if(!token){
             return res.json({status:false,message:"signin first"});
         }  
-        const decoded=jwt.verify(token,process.env.SECRET_KEY,{expiresIn:"1h"});
-        return res.json({status:true,message:"Alreday Logged In",user:decoded.payload});
+        const decoded = jwt.verify(token, process.env.SECRET_KEY);
+        return res.json({status:true,message:"Alreday Logged In",user:decoded});
     }catch(err){
         res.json({status:false,message:"Logged out ,Login First to access"});
     }
