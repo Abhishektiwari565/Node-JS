@@ -18,6 +18,7 @@ export default function Profile() {
   useEffect(()=>{
     getCurrentUser();
   },[])
+  
   const getCurrentUser=async()=>{
     try{
       const res=await axios.get(`${base_uri}/admin/get-current-user`,{withCredentials:true});
