@@ -19,4 +19,8 @@ connectDB();
 app.use("/api/auth",auth_routes);
 app.use("/api/admin",admin_routes);
 
-app.listen(process.env.PORT,()=>console.log("server started"));
+const PORT = process.env.PORT || 4000;
+
+app.listen(PORT, () => {
+    console.log(`Server started on port ${PORT}`);
+});
