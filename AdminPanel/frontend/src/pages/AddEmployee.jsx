@@ -1,12 +1,14 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { base_uri } from '../utils/global_variables';
+import {useNavigate} from 'react-router'
 
 export default function AddEmployee() {
   const [email,setEmail]=useState(" ");
   const [password,setPassword]=useState(" ");
   const [users,setUsers]=useState([]);
 
+  const navigate=useNavigate();
   useEffect(()=>{
     getAllUsers();
   },[])
@@ -80,11 +82,13 @@ export default function AddEmployee() {
     {users.map((user,i)=>
        <tr key={i}>
       <th scope="row">{i+1}</th>
-      <td>{user.name}</td>
+      <td>{user.name ? user.name :"Not assign"}</td>
       <td>{user.email}</td>
-      <td>{user.role}</td>
+      <td>{user.role ? user.role :"Not assign"}</td>
       <td>
-        <button className='btn btn-warning'>Edit</button>
+        <button onClick={()=>{
+          navigate("/edit-emp",{state:user});
+        }} className='btn btn-warning'>Edit</button>
         <button onClick={()=>handleDelete(user._id)} className='btn btn-danger ms-2'>Delete</button>
         </td>
     </tr>

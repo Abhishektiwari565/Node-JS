@@ -11,6 +11,7 @@ import Profile from './pages/Profile'
 import { Routes, Route } from 'react-router'
 import VerifyLogin from './pages/VerifyLogin'
 import AddEmployee from './pages/AddEmployee'
+import EditEmployee from './pages/EditEmployee'
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path='/home' element={<VerifyLogin><Home/> </VerifyLogin>} />
         <Route path='/profile' element={<VerifyLogin><Profile/> </VerifyLogin>} />
         <Route path='/add-emp' element={<VerifyLogin><AddEmployee/> </VerifyLogin>} />
+        <Route path='/edit-emp' element={<VerifyLogin><EditEmployee/> </VerifyLogin>} />
       </Routes>
     </>
   )

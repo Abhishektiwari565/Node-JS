@@ -1,4 +1,4 @@
-import { status } from 'init'
+
 import { userCollection } from '../models/user_models.js'
 import dotenv from 'dotenv'
 import jwt from 'jsonwebtoken'
@@ -19,8 +19,8 @@ export const updateUser = async (req, res) => {
         const token = req.cookies.auth_token;
 
         const decoded = jwt.verify(token, process.env.SECRET_KEY);
-
-        const updatedUser = await userCollection.findByIdAndUpdate(
+        const { _id, ...updateData } = req.body;
+        const updatedUser = await userCollection.findByIdUpdate(
             decoded.id,
             { $set: req.body },
             { new: true }
