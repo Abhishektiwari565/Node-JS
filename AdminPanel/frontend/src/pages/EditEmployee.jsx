@@ -7,7 +7,7 @@ import { useLocation } from 'react-router'
 export default function EditEmployee() {
     const { state } = useLocation();
     useEffect(() => {
-        setCurrentUser(state);
+        setCurrentUser(state.user);
     }, [])
     
     const [currentUser, setCurrentUser] = useState({});
@@ -24,8 +24,6 @@ export default function EditEmployee() {
     return (
         <div className="container py-5">
             <div className="card shadow-lg border-0 rounded-4 p-4">
-
-                {/* ===== Header ===== */}
                 <div className="mb-4">
                     <h2 className="fw-bold">Profile Settings</h2>
                     <p className="text-muted mb-0">
@@ -35,7 +33,6 @@ export default function EditEmployee() {
 
                 <div className="row">
 
-                    {/* ===== Left Profile Image Section ===== */}
                     <div className="col-md-4 text-center border-end">
                         <img
                             src={"https://m.media-amazon.com/images/I/81YCVM+H-LL._AC_UF894,1000_QL80_.jpg"}
@@ -46,12 +43,10 @@ export default function EditEmployee() {
                         />
 
                     </div>
-
-                    {/* ===== Right Form Section ===== */}
                     <div className="col-md-8 ps-4">
                         <form>
                             <div className="row g-3">
-                                {/* Email */}
+                               
                                 <div className="col-md-6">
                                     <label className="form-label fw-semibold">
                                         Email Address *
@@ -66,7 +61,6 @@ export default function EditEmployee() {
                                     />
                                 </div>
 
-                                {/* Full Name */}
                                 <div className="col-md-6">
                                     <label className="form-label fw-semibold">
                                         Full Name *
@@ -80,7 +74,6 @@ export default function EditEmployee() {
                                     />
                                 </div>
 
-                                {/* User Role */}
                                 <div className="col-md-6">
                                     <label className="form-label fw-semibold">
                                         Role
@@ -92,7 +85,6 @@ export default function EditEmployee() {
                                     </select>
                                 </div>
 
-                                {/* Monthly Budget */}
                                 <div className="col-md-6">
                                     <label className="form-label fw-semibold">
                                         Monthly Budget Limit (₹) *
@@ -106,7 +98,6 @@ export default function EditEmployee() {
                                     />
                                 </div>
 
-                                {/* Mobile */}
                                 <div className="col-md-6">
                                     <label className="form-label fw-semibold">
                                         Mobile Number *
@@ -120,7 +111,6 @@ export default function EditEmployee() {
                                     />
                                 </div>
 
-                                {/* Savings Goal */}
                                 <div className="col-md-6">
                                     <label className="form-label fw-semibold">
                                         Savings Goal (₹) *
@@ -134,7 +124,6 @@ export default function EditEmployee() {
                                     />
                                 </div>
 
-                                {/* Password */}
                                 <div className="col-md-6">
                                     <label className="form-label fw-semibold">
                                         Password *
@@ -146,7 +135,6 @@ export default function EditEmployee() {
                                     />
                                 </div>
 
-                                {/* Account Status */}
                                 <div className="col-md-6">
                                     <label className="form-label fw-semibold">
                                         Account Status *
@@ -159,7 +147,6 @@ export default function EditEmployee() {
 
                             </div>
 
-                            {/* ===== Buttons ===== */}
                             <div className="mt-4 d-flex justify-content-end gap-3">
                                 <button type="button" onClick={handleUpdateProfile} className="btn btn-primary px-4">
                                     Save Changes
