@@ -4,6 +4,7 @@ import cookieParsar from 'cookie-parser'
 import cors from 'cors'
 import auth_routes from './routes/auth_routes.js'
 import admin_routes from './routes/admin_routes.js'
+import transaction_routes from "./routes/transaction_routes.js";
 import dotenv from 'dotenv'
 
 dotenv.config();
@@ -18,6 +19,7 @@ connectDB();
 
 app.use("/api/auth",auth_routes);
 app.use("/api/admin",admin_routes);
+app.use("/api/transaction", transaction_routes);
 
 const PORT = process.env.PORT || 4000;
 
