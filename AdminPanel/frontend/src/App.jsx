@@ -12,6 +12,10 @@ import { Routes, Route } from 'react-router'
 import VerifyLogin from './pages/VerifyLogin'
 import AddEmployee from './pages/AddEmployee'
 import EditEmployee from './pages/EditEmployee'
+import Income from './pages/Income'
+import Expense from './pages/Expense'
+import Transactions from "./pages/Transactions";
+
 
 function App() {
   return (
@@ -27,6 +31,10 @@ function App() {
         <Route path='/profile' element={<VerifyLogin><Profile/> </VerifyLogin>} />
         <Route path='/add-emp' element={<VerifyLogin><AddEmployee/> </VerifyLogin>} />
         <Route path='/edit-emp' element={<VerifyLogin><EditEmployee/> </VerifyLogin>} />
+
+        <Route path="/income" element={<Income />} />
+        <Route path="/expense" element={<Expense />} />
+        <Route path="/transactions" element={<Transactions />} />
       </Routes>
     </>
   )

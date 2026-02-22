@@ -1,65 +1,85 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
-const Expense = () => {
-  const [expenseList, setExpenseList] = useState([]);
-  const [title, setTitle] = useState("");
+
+function Expense() {
   const [amount, setAmount] = useState("");
+  const [title, setTitle] = useState("");
+  const [transactions, setTransactions] = useState([]);
 
-  const addExpense = () => {
-    if (!title || !amount) return;
+  const addExpense = async (e) => {
+    e.preventDefault();
 
-    const newExpense = {
-      id: Date.now(),
-      title,
-      amount: Number(amount),
-    };
+    const res = await axios.post(
+     `${base_uri}/transaction/add`,
+      {
+        title,
+        amount,
+        type: "expense",   // 👈 ONLY difference from income
+      },
+      { withCredentials: true }   // 👈 VERY IMPORTANT
+    );
 
-    setExpenseList([...expenseList, newExpense]);
-    setTitle("");
-    setAmount("");
+    if (res.data.status) {
+      alert("Expense Added");
+      getTransactions(); // refresh list
+      setTitle("");
+      setAmount("");
+    }
   };
 
-  const deleteExpense = (id) => {
-    setExpenseList(expenseList.filter((item) => item.id !== id));
+  const getTransactions = async () => {
+    const res = await axios.get(
+      "http://localhost:4000/get-transactions",
+      { withCredentials: true }
+    );
+
+    if (res.data.status) {
+      // show only expense
+      const expenseData = res.data.transactions.filter(
+        (item) => item.type === "expense"
+      );
+
+      setTransactions(expenseData);
+    }
   };
 
-  const totalExpense = expenseList.reduce(
-    (acc, curr) => acc + curr.amount,
-    0
-  );
+  useEffect(() => {
+    getTransactions();
+  }, []);
 
   return (
-    <div className="container">
-      <h2>Expense Page</h2>
+    <div>
+      <h2>Expense</h2>
 
-      <input
-        type="text"
-        placeholder="Expense Title"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-      />
+      <form onSubmit={addExpense}>
+        <input
+          type="text"
+          placeholder="Title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
 
-      <input
-        type="number"
-        placeholder="Amount"
-        value={amount}
-        onChange={(e) => setAmount(e.target.value)}
-      />
+        <input
+          type="number"
+          placeholder="Amount"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+        />
 
-      <button onClick={addExpense}>Add Expense</button>
+        <button type="submit">Add Expense</button>
+      </form>
 
-      <h3>Total Expense: ₹{totalExpense}</h3>
+      <hr />
 
-      <ul>
-        {expenseList.map((item) => (
-          <li key={item.id}>
-            {item.title} - ₹{item.amount}
-            <button onClick={() => deleteExpense(item.id)}>Delete</button>
-          </li>
-        ))}
-      </ul>
+      {transactions.map((item) => (
+        <div key={item._id}>
+          <h4>{item.title}</h4>
+          <p>₹ {item.amount}</p>
+        </div>
+      ))}
     </div>
   );
-};
+}
 
 export default Expense;
