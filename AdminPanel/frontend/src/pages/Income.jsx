@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import
+import { base_uri } from "../utils/global_variables.js";
 
-function Income() {
+export default function Income() {
   const [amount, setAmount] = useState("");
   const [category, setCategory] = useState("");
   const [note, setNote] = useState("");
@@ -91,5 +91,3 @@ function Income() {
     </div>
   );
 }
-
-export default Income;

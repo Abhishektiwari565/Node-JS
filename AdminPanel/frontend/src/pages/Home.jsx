@@ -1,20 +1,61 @@
 import axios from "axios";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { base_uri } from "../utils/global_variables.js";
 
 export default function Home() {
-  const navigate=useNavigate();
-  
+  const navigate = useNavigate();
+
+  const [transactions, setTransactions] = useState([]);
+  const [income, setIncome] = useState(0);
+  const [expense, setExpense] = useState(0);
+  const [balance, setBalance] = useState(0);
+
   const handleLogOut = async () => {
     try {
-      const res = await axios.get(`${base_uri}/auth/signout`, { withCredentials: true })
+      const res = await axios.get(
+        `${base_uri}/auth/signout`,
+        { withCredentials: true }
+      );
       alert(res.data.message);
       navigate("/");
     } catch (err) {
       alert(err.message);
     }
-  }
+  };
+
+  const getTransactions = async () => {
+    try {
+      const res = await axios.get(
+        `${base_uri}/transaction/get`,
+        { withCredentials: true }
+      );
+
+      if (res.data.status) {
+        const data = res.data.transactions;
+        setTransactions(data);
+
+        const totalIncome = data
+          .filter((t) => t.type === "income")
+          .reduce((acc, t) => acc + Number(t.amount), 0);
+
+        const totalExpense = data
+          .filter((t) => t.type === "expense")
+          .reduce((acc, t) => acc + Number(t.amount), 0);
+
+        setIncome(totalIncome);
+        setExpense(totalExpense);
+        setBalance(totalIncome - totalExpense);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    getTransactions();
+  }, []);
+
   return (
     <div className="container-fluid">
       <div className="row min-vh-100">
@@ -87,28 +128,28 @@ export default function Home() {
             <div className="col-md-3">
               <div className="card border-0 shadow-sm rounded-4 p-3">
                 <h6 className="text-muted">Total Balance</h6>
-                <h3 className="fw-bold">₹1,25,500</h3>
+                <h3 className="fw-bold">₹{balance}</h3>
               </div>
             </div>
 
             <div className="col-md-3">
               <div className="card border-0 shadow-sm rounded-4 p-3">
-                <h6 className="text-muted">Monthly Income</h6>
-                <h3 className="fw-bold text-success">₹52,000</h3>
+                <h6 className="text-muted">Total Income</h6>
+                <h3 className="fw-bold text-success">₹{income}</h3>
               </div>
             </div>
 
             <div className="col-md-3">
               <div className="card border-0 shadow-sm rounded-4 p-3">
-                <h6 className="text-muted">Monthly Expense</h6>
-                <h3 className="fw-bold text-danger">₹28,300</h3>
+                <h6 className="text-muted">Total Expense</h6>
+                <h3 className="fw-bold text-danger">₹{expense}</h3>
               </div>
             </div>
 
             <div className="col-md-3">
               <div className="card border-0 shadow-sm rounded-4 p-3">
                 <h6 className="text-muted">Savings</h6>
-                <h3 className="fw-bold text-primary">₹23,700</h3>
+                <h3 className="fw-bold text-primary">₹{balance}</h3>
               </div>
             </div>
 
@@ -123,26 +164,34 @@ export default function Home() {
                 <h5 className="fw-semibold mb-3">Recent Transactions</h5>
 
                 <ul className="list-group list-group-flush">
-                  <li className="list-group-item d-flex justify-content-between">
-                    Salary Credit <span className="text-success">+₹50,000</span>
-                  </li>
+                  {transactions.slice(-4).reverse().map((item) => (
+                    <li
+                      key={item._id}
+                      className="list-group-item d-flex justify-content-between"
+                    >
+                      {item.category}
+                      <span
+                        className={
+                          item.type === "income"
+                            ? "text-success"
+                            : "text-danger"
+                        }
+                      >
+                        {item.type === "income" ? "+" : "-"}₹{item.amount}
+                      </span>
+                    </li>
+                  ))}
 
-                  <li className="list-group-item d-flex justify-content-between">
-                    Grocery Shopping <span className="text-danger">-₹2,300</span>
-                  </li>
-
-                  <li className="list-group-item d-flex justify-content-between">
-                    Electricity Bill <span className="text-danger">-₹1,500</span>
-                  </li>
-
-                  <li className="list-group-item d-flex justify-content-between">
-                    Freelance Payment <span className="text-success">+₹12,000</span>
-                  </li>
+                  {transactions.length === 0 && (
+                    <li className="list-group-item text-center">
+                      No transactions found
+                    </li>
+                  )}
                 </ul>
               </div>
             </div>
 
-            {/* Budget Overview */}
+            {/* Budget Overview (UNCHANGED) */}
             <div className="col-md-6">
               <div className="card border-0 shadow-sm rounded-4 p-4">
                 <h5 className="fw-semibold mb-3">Budget Overview</h5>

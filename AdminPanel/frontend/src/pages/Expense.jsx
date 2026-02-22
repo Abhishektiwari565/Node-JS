@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 
-function Expense() {
+export default function Expense() {
   const [amount, setAmount] = useState("");
   const [title, setTitle] = useState("");
   const [transactions, setTransactions] = useState([]);
@@ -81,5 +81,3 @@ function Expense() {
     </div>
   );
 }
-
-export default Expense;
