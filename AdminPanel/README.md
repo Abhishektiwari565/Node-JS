@@ -1,5 +1,4 @@
 
-
 # 💰 Expense Tracker – MERN Stack Application
 
 Welcome to the **Expense Tracker Application** built using **React.js (Frontend)** and **Node.js + Express.js + MongoDB (Backend)**.
@@ -99,3 +98,10 @@ GET /get-transactions
 * 📜 Transactions Page
 
 ---
+demo video:
+
+https://github.com/user-attachments/assets/edbc80bb-8fea-4bed-ac2f-1c268a6030b6
+
+
+
+
