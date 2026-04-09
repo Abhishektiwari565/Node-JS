@@ -1,6 +1,6 @@
 import express from 'express'
 import {getTodo,addTodo,deleteTodo} from '../controllers/todoControllers.js'
-import {authMiddleware} from './middleware/authMiddleware.js'
+import {authMiddleware} from '../middleware/authMiddleware.js'
 
 const router=express.Router();
 router.get("/addtodo",authMiddleware,addTodo);
