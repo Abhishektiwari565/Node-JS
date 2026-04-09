@@ -1,22 +1,17 @@
-import jwt from "jsonwebtoken";
-
 export const authMiddleware = (req, res, next) => {
   try {
-    const token = req.headers.authorization;
+    // id frontend / postman se lo
+    const userId = req.headers.userid;
 
-    // token check
-    if (!token) {
-      return res.status(401).json({ message: "No token, access denied" });
+    if (!userId) {
+      return res.status(400).json({ message: "UserId required" });
     }
 
-    // verify token
-    const decoded = jwt.verify(token, "JWT_SECRET");
-
-    // user info save
-    req.user = decoded;
+    // req.user me save kar do
+    req.user = { id: userId };
 
     next();
   } catch (err) {
-    res.status(400).json({ message: "Invalid token" });
+    res.json({ message: "Middleware error", err });
   }
 };
