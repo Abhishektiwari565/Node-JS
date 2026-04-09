@@ -1,11 +1,11 @@
 import {userCollection} from '../models/user.js'
-import jwt from 'jsonwebtokenn'
+import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 
 export const signUp=async(req,res)=>{
     try{
         const {email,password}=req.body;
-        const existUser=await userCollection.find({email});
+        const existUser=await userCollection.findOne({email});
         if(existUser){
             res.json({message:"user already exist"});
         }
