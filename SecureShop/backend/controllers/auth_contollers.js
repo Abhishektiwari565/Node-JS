@@ -13,17 +13,17 @@ export const register=async(req,res)=>{
         ).toString();
 
         const expireOtp=new Date(Date.now()+2*60*1000);
-        const existUser=await authModel.find({email});
+        const existUser=await authModel.findOne({email});
         if(existUser){
-            res.json({message:"user already exist"});
+            return res.json({message:"user already exist"});
         }
         const hashed=await bcrypt.hash(password,12);
-        const user=new authModel.create({name,email,password:hashed,otp,expireOtp});
-        const isSent=await sendOtpMail({email,otp});
+        const user=await authModel.create({name,email,password:hashed,otp,expireOtp});
+        const isSent=await sendOtpMail(email, otp);
         if(!isSent){
-            res.json({message:"Failed to send otp"});
+            return res.json({message:"Failed to send otp"});
         }
-        res.json({message:"otp sent successfully on your email",otp});
+        return res.json({message:"otp sent successfully on your email",otp});
     }catch(err){
         res.json({message:"user not registered",err:err.message});
     }
@@ -52,19 +52,19 @@ export const Login=async(req,res)=>{
     try{
         const user= await authModel.findOne({email});
         if(!user){
-            res.json({message:"user not found"});
+            return res.json({message:"user not found"});
         }
         const isMatch=await bcrypt.compare(password,user.password);
         if(!isMatch){
-            res.json({messsage:"invalid password"});
+            return res.json({message:"invalid password"});
         }
         const token=jwt.sign(
             {id:user._id},
             process.env.JWT_SECRET,
             {expiresIn:"1d"}
         );
-        res.json(token);
-    }catch{err}{
+        return res.json(token);
+    }catch(err){
         res.json({message:"login failed",err:err.message});
     }
 }

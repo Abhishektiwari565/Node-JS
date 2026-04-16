@@ -1,7 +1,7 @@
 import nodemailer from 'nodemailer'
 import dotenv from 'dotenv'
 
-dotenv.congif();
+dotenv.config();
 
 const transporter=nodemailer.createTransport({
     service:"gmail",
@@ -16,7 +16,7 @@ export const sendOtpMail=async(email,otp)=>{
         await transporter.sendMail({
             from:`SecureShop <${process.env.EMAIL}>`,
             to:email,
-            subkect:"OTP verification",
+            subject:"OTP verification",
             text:`Your OTP IS ${otp},expires within 2 minutes`
         });
         return true;
