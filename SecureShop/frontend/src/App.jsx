@@ -1,15 +1,15 @@
 
-import {BrowseRouter,Routes,Route} from 'react-router-dom'
+import {BrowserRouter,Routes,Route} from 'react-router-dom'
 import {Register} from './components/register.jsx'
 
 function App() {
   
   return (
-  <BrowseRouter>
+  <BrowserRouter>
   <Routes>
     <Route path="/register" element={<Register/>}/>
   </Routes>
-  </BrowseRouter>
+  </BrowserRouter>
   )
 }
 
