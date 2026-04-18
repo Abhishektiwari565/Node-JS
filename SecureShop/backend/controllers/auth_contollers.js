@@ -7,26 +7,33 @@ import {sendOtpMail} from '../services/otp_services.js'
 dotenv.config();
 export const register = async (req, res) => {
     try {
+        console.log("Registration request received:", req.body);
         const { name, email, password } = req.body;
 
         // Validate input
         if (!name || !email || !password) {
+            console.log("Missing required fields");
             return res.status(400).json({ message: "All fields are required" });
         }
 
+        console.log("Checking if user exists:", email);
         const existUser = await authModel.findOne({ email });
         if (existUser) {
+            console.log("User already exists:", email);
             return res.status(400).json({ message: "User already exists" });
         }
 
+        console.log("Hashing password");
         const hashed = await bcrypt.hash(password, 12);
 
-       const user= await authModel.create({
+        console.log("Creating user");
+        const user = await authModel.create({
             name,
             email,
             password: hashed
         });
 
+        console.log("User created successfully:", user.email);
         res.status(201).json({ message: "User registered successfully", user: { name: user.name, email: user.email } });
 
     } catch (err) {
@@ -73,21 +80,23 @@ export const verifyOtp = async (req, res) => {
     try {
         const { email, otp } = req.body;
 
-        const user = await authModel.findOne({ email });
-
-        if (!user) {
-            return res.json({ message: "user not found" });
+        if (!email || !otp) {
+            return res.status(400).json({ message: "Email and OTP are required" });
         }
 
-        if (new Date() > user.expireOtp) {
-            return res.json({ message: "otp expired" });
+        const user = await authModel.findOne({ email });
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        if (!user.expireOtp || new Date() > user.expireOtp) {
+            return res.status(400).json({ message: "OTP expired" });
         }
 
         if (user.otp !== otp) {
-            return res.json({ message: "invalid otp" });
+            return res.status(400).json({ message: "Invalid OTP" });
         }
 
-        // clear otp
         user.otp = null;
         user.expireOtp = null;
         await user.save();
@@ -98,9 +107,10 @@ export const verifyOtp = async (req, res) => {
             { expiresIn: "1d" }
         );
 
-        res.json({ message: "otp verified & login successful", token });
+        res.json({ message: "OTP verified & login successful", token });
 
     } catch (err) {
-        res.json({ message: "error", err: err.message });
+        console.error("Verify OTP error:", err);
+        res.status(500).json({ message: "Server error", error: err.message });
     }
 };

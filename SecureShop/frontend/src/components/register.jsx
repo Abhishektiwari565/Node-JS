@@ -23,7 +23,9 @@ export default function Register(){
             alert(res.data.message);
             navigate("/login");
         } catch (error) {
-            alert(error.message);
+            console.error("Registration error:", error);
+            console.error("Error response:", error.response);
+            alert(error.response?.data?.message || "Registration failed");
         }
     }
 
