@@ -1,12 +1,30 @@
-import {API} from '../services/api.js'
+import API from '../services/api.js'
 import {useState} from 'react'
+import {useNavigate} from 'react-router-dom'
 
 export default function Register(){
     const [formData,setFormData]=useState({name:"",email:"",password:""});
+    const navigate=useNavigate();
 
     const handleRegister=async()=>{
-        const res=API.post("/register",formData);
-        alert(res.data.message);
+        // Validate form data
+        if (!formData.name || !formData.email || !formData.password) {
+            alert("Please fill in all fields");
+            return;
+        }
+
+        if (formData.password.length < 6) {
+            alert("Password must be at least 6 characters long");
+            return;
+        }
+
+        try {
+            const res = await API.post("/auth/register", formData);
+            alert(res.data.message);
+            navigate("/login");
+        } catch (error) {
+            alert(error.message);
+        }
     }
 
 return(
