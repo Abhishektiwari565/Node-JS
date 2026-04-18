@@ -8,7 +8,6 @@ export default function Register(){
         const res=API.post("/register",formData);
         alert(res.data.message);
     }
-}
 
 return(
     <div className='container mt-5 col-md-4'>
@@ -19,3 +18,4 @@ return(
         <button className='btn btn-primary mt-3' onClick={handleRegister}>Register</button>
     </div>
 )
+}
