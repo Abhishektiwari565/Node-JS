@@ -43,9 +43,9 @@ export const updateProducts = async (req, res) => {
       updateData.image = req.file.filename;
     }
 
-    await productModel.findByIdAndUpdate(id, updateData);
+    const product=await productModel.findByIdAndUpdate(id, updateData);
 
-    res.json({ message: "product updated successfully" });
+    res.json({ message: "product updated successfully", product });
 
   } catch (err) {
     res.json({ message: "Failed to update product", error: err.message });

@@ -4,8 +4,8 @@ import {upload} from '../middleware/multer.js'
 
 const router=express.Router();
 router.post("/add",upload.single("image"),addProduct);
-router.post("/get",getAllProducts);
-router.post("/delete",deleteProducts);
-router.post("/update",upload.single("image"),updateProducts);
+router.get("/get",getAllProducts);
+router.delete("/delete/:id",deleteProducts);
+router.put("/update/:id",upload.single("image"),updateProducts);
 
 export default router;
