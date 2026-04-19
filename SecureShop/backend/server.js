@@ -13,6 +13,7 @@ app.use(cors());
 connectDB();
 app.use("/auth",authRoutes);
 app.use("/products",productRoutes)
+app.use("/uploads",express.static("uploads"))
 
 app.listen(process.env.PORT,()=>{
     console.log("server started suucessfullly");

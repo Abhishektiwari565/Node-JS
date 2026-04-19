@@ -2,7 +2,8 @@ import {productModel} from '../models/product_models.js'
 
 export const addProduct=async(req,res)=>{
     try{
-        const {name,price,description,category,image}=req.body;
+        const {name,price,description,category}=req.body;
+        const image = req.file ? req.file.filename : null;
         const product=await productModel.create({name,price,description,category,image});
         res.json({message:"product added successfully",product});
     }catch(err){
@@ -29,12 +30,24 @@ export const deleteProducts=async(req,res)=>{
     }
 }
 
-export const updateProducts=async(req,res)=>{
-   try{
-     const {id}=req.params;
-    await productModel.findByIdAndUpdate(id,req.body);
-    res.json({message:"product updated successfully"});
-   }catch(err){
-    res.json({message:"Failed to update product",error:err.message});
-   }
-}
+export const updateProducts = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const updateData = {
+      ...req.body
+    };
+
+    // 👉 if new image uploaded
+    if (req.file) {
+      updateData.image = req.file.filename;
+    }
+
+    await productModel.findByIdAndUpdate(id, updateData);
+
+    res.json({ message: "product updated successfully" });
+
+  } catch (err) {
+    res.json({ message: "Failed to update product", error: err.message });
+  }
+};
