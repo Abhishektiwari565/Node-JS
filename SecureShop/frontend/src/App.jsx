@@ -5,6 +5,7 @@ import Login from './components/login.jsx'
 import VerifyOtp from './components/verifyOtp.jsx'
 import DashBoard from './components/DashBoard.jsx'
 import AddProduct from './components/AddProduct.jsx'
+import ProductList from './components/ProductList.jsx'
 
 function App() {
   
@@ -15,6 +16,7 @@ function App() {
     <Route path="/login" element={<Login/>}/>
     <Route path="/verifyOtp" element={<VerifyOtp/>}/>
     <Route path="/add" element={<AddProduct/>}/>
+    <Route path="/products" element={<ProductList/>}/>
     
   </Routes>
   )
