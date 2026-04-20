@@ -1,8 +1,8 @@
-import {authModel} from '../models/auth_models.js'
+import { authModel } from '../models/auth_models.js'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
-import {sendOtpMail} from '../services/otp_services.js'
+import { sendOtpMail } from '../services/otp_services.js'
 
 dotenv.config();
 export const register = async (req, res) => {
@@ -49,7 +49,8 @@ export const Login = async (req, res) => {
         const user = await authModel.findOne({ email });
 
         if (!user) {
-            return res.json({ message: "user not found" });
+            res.json({ message: "user not found" });
+            return
         }
 
         const isMatch = await bcrypt.compare(password, user.password);

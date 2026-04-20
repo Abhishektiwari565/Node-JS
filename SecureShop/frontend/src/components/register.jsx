@@ -19,7 +19,7 @@ export default function Register(){
         }
 
         try {
-            const res = await API.post("/auth/register", formData);
+            const res = await API.post("/auth/register", formData)
             alert(res.data.message);
             navigate("/login");
         } catch (error) {
@@ -36,6 +36,10 @@ return(
         <input className='form-control mt-2' type="email" placeholder='Email' onChange={(e)=>setFormData({...formData,email:e.target.value})} />
         <input className='form-control mt-2' type="password" placeholder='Password' onChange={(e)=>setFormData({...formData,password:e.target.value})} />
         <button className='btn btn-primary mt-3' onClick={handleRegister}>Register</button>
+         <p className="mt-3">
+      Already have an account? 
+      <a href="/login"> Sign In</a>
+    </p>
     </div>
 )
 }

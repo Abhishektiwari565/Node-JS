@@ -24,7 +24,7 @@ export default function VerifyOtp(){
             alert(res.data.message);
             localStorage.removeItem('otpEmail');
             localStorage.setItem("token", res.data.token);
-            navigate('/dashboard');
+                    navigate('/add');
         }catch(error){
             alert(error.response?.data?.message || error.message);
         }
